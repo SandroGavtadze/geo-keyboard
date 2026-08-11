@@ -248,7 +248,9 @@ class Engine {
   }
 
   _addResult(results, word, freq, penalty, kind, node) {
-    const score = Math.log(1 + freq) - penalty * 2.0 - (kind === 'completion' ? node._complCost || 0 : 0);
+    // Exact matches (user typed the whole word) outrank completions of equal frequency.
+    const exactBonus = kind === 'exact' ? 1.5 : 0;
+    const score = Math.log(1 + freq) - penalty * 2.0 + exactBonus;
     const cur = results.get(word);
     if (!cur || cur.score < score) results.set(word, { score, kind });
   }

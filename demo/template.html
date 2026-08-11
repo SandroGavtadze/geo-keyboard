@@ -93,6 +93,7 @@
     <b>Mode A:</b> space commits the highlighted Georgian word · tap a suggestion to choose another ·
     backspace right after a commit undoes it.<br>
     <b>Mode B:</b> keys type Georgian directly; suggestions show completions & spellcheck.<br>
+    the <b style="color:#4f8ef7">აბგ/abc</b> key switches modes instantly — in the real app, your preferred default lives in Settings.<br>
     dictionary: 49k words + 22k bigrams (Crúbadán corpus) · engine runs 100% locally
   </div>
 </div>
@@ -122,13 +123,13 @@ const LAYOUT_LATIN = [
   ['q','w','e','r','t','y','u','i','o','p'],
   ['a','s','d','f','g','h','j','k','l'],
   ['SHIFT','z','x','c','v','b','n','m','BKSP'],
-  ['123','SPACE','RET']
+  ['123','LANG','SPACE','RET']
 ];
 const LAYOUT_GEO = [
   ['ქ','წ','ე','რ','ტ','ყ','უ','ი','ო','პ'],
   ['ა','ს','დ','ფ','გ','ჰ','ჯ','კ','ლ'],
   ['⇧','ზ','ხ','ც','ვ','ბ','ნ','მ','BKSP'],
-  ['123','SPACE','RET']
+  ['123','LANG','SPACE','RET']
 ];
 // Georgian shift layer (extended letters on long-press in real app; here via shift)
 const GEO_SHIFT = { 'ტ':'თ','წ':'ჭ','ჩ':'ჭ','ზ':'ძ','ს':'შ','ც':'ჩ','ჯ':'ჟ','გ':'ღ','ხ':'ჴ','კ':'ქ','ჰ':'ჵ' };
@@ -170,6 +171,7 @@ function onKey(k) {
   if (k === 'SPACE') { space(); return; }
   if (k === 'RET') { committed.push('\n'); lastCommit = null; render(); return; }
   if (k === '123') { return; } // numbers layer omitted in prototype
+  if (k === 'LANG') { setMode(mode === 'A' ? 'B' : 'A'); return; }
 
   if (mode === 'A') {
     latinBuf += shift ? k.toUpperCase() : k;
@@ -277,6 +279,7 @@ function render() {
       else if (k === 'SPACE') { label = mode === 'A' ? 'space · სივრცე' : 'სივრცე'; cls += ' wide'; el.style.fontSize = '13px'; }
       else if (k === 'RET') { label = '⏎'; cls += ' ret special'; }
       else if (k === '123') { label = '123'; cls += ' special'; }
+      else if (k === 'LANG') { label = mode === 'A' ? 'აბგ' : 'abc'; cls += ' special'; el.style.color = '#4f8ef7'; }
       else if (mode === 'B' && shift && GEO_SHIFT[k]) { label = GEO_SHIFT[k]; }
       else if (mode === 'A' && shift) { label = k.toUpperCase(); }
       el.className = cls;
