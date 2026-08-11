@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ქართული კლავიატურა — Prototype</title>
+<style>
+  :root {
+    --bg: #0e0e11;
+    --panel: #1b1b20;
+    --key: #3a3a43;
+    --key-special: #23232a;
+    --key-text: #f2f2f4;
+    --accent: #4f8ef7;
+    --sugg-bg: #26262e;
+    --kb-bg: #17171c;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--key-text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Helvetica Neue", Arial, sans-serif; }
+  .wrap { max-width: 430px; margin: 0 auto; padding: 14px 10px 24px; }
+  h1 { font-size: 17px; font-weight: 600; text-align: center; margin: 6px 0 2px; }
+  .sub { text-align: center; color: #8e8e97; font-size: 12.5px; margin-bottom: 12px; }
+
+  .modes { display: flex; gap: 8px; margin-bottom: 12px; }
+  .mode-btn { flex: 1; padding: 10px 6px; border-radius: 12px; border: 1.5px solid #33333c;
+    background: var(--panel); color: #b9b9c2; font-size: 13px; cursor: pointer; text-align: center; }
+  .mode-btn.active { border-color: var(--accent); color: #fff; background: #21293c; }
+  .mode-btn b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+
+  .screen { background: var(--panel); border-radius: 16px; padding: 14px; min-height: 110px; margin-bottom: 10px; }
+  .screen-label { font-size: 11px; color: #77777f; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  #output { font-size: 21px; line-height: 1.45; min-height: 60px; word-wrap: break-word; }
+  #output .pending { color: var(--accent); border-bottom: 2px solid var(--accent); }
+  .caret { display: inline-block; width: 2px; height: 1.15em; background: var(--accent);
+    vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .raw { color: #6d6d76; font-size: 12px; margin-top: 8px; min-height: 15px; }
+
+  .kb { background: var(--kb-bg); border-radius: 16px; padding: 8px 4px 10px; user-select: none; }
+  .sugg { display: flex; gap: 6px; padding: 2px 4px 8px; min-height: 44px; }
+  .sugg-item { flex: 1; background: var(--sugg-bg); border-radius: 8px; padding: 8px 4px;
+    text-align: center; font-size: 16.5px; cursor: pointer; overflow: hidden; white-space: nowrap;
+    text-overflow: ellipsis; border: 1px solid transparent; }
+  .sugg-item.primary { border-color: #3d5a94; background: #232c3f; }
+  .sugg-item:active { background: #33333e; }
+  .sugg-item .k { display: block; font-size: 9px; color: #74747e; margin-top: 1px; }
+
+  .row { display: flex; justify-content: center; gap: 5px; margin-bottom: 7px; padding: 0 2px; }
+  .key { flex: 1; max-width: 40px; height: 44px; background: var(--key); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; font-size: 18.5px;
+    cursor: pointer; box-shadow: 0 1px 0 rgba(0,0,0,.45); position: relative; }
+  .key:active { background: #55555f; }
+  .key.special { background: var(--key-special); max-width: 52px; font-size: 14px; }
+  .key.wide { max-width: none; flex: 4; }
+  .key.ret { max-width: 76px; flex: 2; font-size: 13px; }
+  .key .hint { position: absolute; top: 2px; right: 4px; font-size: 8.5px; color: #85858f; }
+
+  .foot { text-align: center; color: #66666e; font-size: 11.5px; margin-top: 12px; line-height: 1.5; }
+  .foot b { color: #9a9aa4; }
+  #hwNote { color: #4f8ef7; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ქართული კლავიატურა</h1>
+  <div class="sub">prototype — two typing experiences, same engine</div>
+
+  <div class="modes">
+    <div class="mode-btn active" id="modeA" onclick="setMode('A')">
+      <b>A · QWERTY + ცოცხალი გადაყვანა</b>
+      type <i>saxlshi</i> → სახლში appears
+    </div>
+    <div class="mode-btn" id="modeB" onclick="setMode('B')">
+      <b>B · ქართული ასოები</b>
+      Georgian letters on keys
+    </div>
+  </div>
+
+  <div class="screen">
+    <div class="screen-label">Messages</div>
+    <div id="output"><span class="caret"></span></div>
+    <div class="raw" id="rawline"></div>
+  </div>
+
+  <div class="kb">
+    <div class="sugg" id="sugg"></div>
+    <div id="rows"></div>
+  </div>
+
+  <div class="foot">
+    <span id="hwNote">💻 You can also type with your real keyboard.</span><br>
+    <b>Mode A:</b> space commits the highlighted Georgian word · tap a suggestion to choose another ·
+    backspace right after a commit undoes it.<br>
+    <b>Mode B:</b> keys type Georgian directly; suggestions show completions & spellcheck.<br>
+    dictionary: 49k words + 22k bigrams (Crúbadán corpus) · engine runs 100% locally
+  </div>
+</div>
+
+<script>
+// ===== embedded dictionary =====
+const WORDS_RAW = `__WORDS__`;
+const BIGRAMS_RAW = `__BIGRAMS__`;
+</script>
+<script>
+__ENGINE__
+</script>
+<script>
+const words = WORDS_RAW.trim().split('\n').map(l => { const i = l.lastIndexOf(' '); return [l.slice(0, i), +l.slice(i + 1)]; });
+const bigrams = BIGRAMS_RAW.trim().split('\n').map(l => { const p = l.split(' '); return [p[0], p[1], +p[2]]; });
+const eng = new GeoIME.Engine(words, bigrams);
+
+// ===== state =====
+let mode = 'A';
+let committed = [];      // committed Georgian words (and punctuation strings)
+let latinBuf = '';       // Mode A: latin chars of current word
+let geoBuf = '';         // Mode B: georgian chars of current word
+let lastCommit = null;   // {latin, text} for backspace-undo
+let shift = false;
+
+const LAYOUT_LATIN = [
+  ['q','w','e','r','t','y','u','i','o','p'],
+  ['a','s','d','f','g','h','j','k','l'],
+  ['SHIFT','z','x','c','v','b','n','m','BKSP'],
+  ['123','SPACE','RET']
+];
+const LAYOUT_GEO = [
+  ['ქ','წ','ე','რ','ტ','ყ','უ','ი','ო','პ'],
+  ['ა','ს','დ','ფ','გ','ჰ','ჯ','კ','ლ'],
+  ['⇧','ზ','ხ','ც','ვ','ბ','ნ','მ','BKSP'],
+  ['123','SPACE','RET']
+];
+// Georgian shift layer (extended letters on long-press in real app; here via shift)
+const GEO_SHIFT = { 'ტ':'თ','წ':'ჭ','ჩ':'ჭ','ზ':'ძ','ს':'შ','ც':'ჩ','ჯ':'ჟ','გ':'ღ','ხ':'ჴ','კ':'ქ','ჰ':'ჵ' };
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeA').classList.toggle('active', m === 'A');
+  document.getElementById('modeB').classList.toggle('active', m === 'B');
+  latinBuf = ''; geoBuf = ''; lastCommit = null;
+  render();
+}
+
+function currentSuggestions() {
+  if (mode === 'A') {
+    if (latinBuf) return eng.suggest(latinBuf, { max: 4 });
+    return eng.predictNext(lastWord(), 3);
+  } else {
+    if (geoBuf) return eng.suggest(geoBuf, { max: 4 });
+    return eng.predictNext(lastWord(), 3);
+  }
+}
+function lastWord() {
+  for (let i = committed.length - 1; i >= 0; i--) {
+    if (/^[ა-ჰ]+$/.test(committed[i])) return committed[i];
+  }
+  return null;
+}
+
+function commitWord(text, latinUsed) {
+  if (!text) return;
+  committed.push(text);
+  lastCommit = { latin: latinUsed, text };
+  latinBuf = ''; geoBuf = '';
+}
+
+function onKey(k) {
+  if (k === 'SHIFT' || k === '⇧') { shift = !shift; render(); return; }
+  if (k === 'BKSP') { backspace(); return; }
+  if (k === 'SPACE') { space(); return; }
+  if (k === 'RET') { committed.push('\n'); lastCommit = null; render(); return; }
+  if (k === '123') { return; } // numbers layer omitted in prototype
+
+  if (mode === 'A') {
+    latinBuf += shift ? k.toUpperCase() : k;
+  } else {
+    let ch = k;
+    if (shift && GEO_SHIFT[k]) ch = GEO_SHIFT[k];
+    geoBuf += ch;
+  }
+  shift = false;
+  lastCommit = null;
+  render();
+}
+
+function space() {
+  if (mode === 'A' && latinBuf) {
+    const s = currentSuggestions();
+    commitWord(s.length ? s[0].text : latinBuf, latinBuf);
+  } else if (mode === 'B' && geoBuf) {
+    commitWord(geoBuf, null);
+  } else {
+    committed.push(' ');
+    lastCommit = null;
+  }
+  render();
+}
+
+function backspace() {
+  if (mode === 'A' && latinBuf) { latinBuf = latinBuf.slice(0, -1); }
+  else if (mode === 'B' && geoBuf) { geoBuf = Array.from(geoBuf).slice(0, -1).join(''); }
+  else if (lastCommit && lastCommit.latin) {
+    // undo autocorrect: restore latin buffer
+    committed.pop();
+    latinBuf = lastCommit.latin;
+    lastCommit = null;
+  } else if (committed.length) {
+    const last = committed.pop();
+    if (/^[ა-ჰ]+$/.test(last) && last.length > 1) {
+      const arr = Array.from(last); arr.pop();
+      if (mode === 'B') geoBuf = arr.join('');
+      else committed.push(arr.join(''));
+    }
+    lastCommit = null;
+  }
+  render();
+}
+
+function tapSuggestion(i) {
+  const s = currentSuggestions();
+  if (!s[i]) return;
+  if ((mode === 'A' && !latinBuf) || (mode === 'B' && !geoBuf)) {
+    // next-word prediction tap
+    committed.push(s[i].text);
+    lastCommit = null;
+  } else {
+    commitWord(s[i].text, mode === 'A' ? latinBuf : null);
+  }
+  render();
+}
+
+// ===== rendering =====
+function render() {
+  // output
+  const out = document.getElementById('output');
+  let html = '';
+  for (const t of committed) {
+    if (t === '\n') { html += '<br>'; }
+    else if (t === ' ') { html += ' '; }
+    else { html += escapeHtml(t) + ' '; }
+  }
+  const pending = mode === 'A'
+    ? (latinBuf ? (currentSuggestions()[0] || { text: latinBuf }).text : '')
+    : geoBuf;
+  if (pending) html += '<span class="pending">' + escapeHtml(pending) + '</span>';
+  html += '<span class="caret"></span>';
+  out.innerHTML = html;
+
+  document.getElementById('rawline').textContent =
+    mode === 'A' && latinBuf ? 'typing: ' + latinBuf : '';
+
+  // suggestions
+  const sugg = currentSuggestions();
+  const bar = document.getElementById('sugg');
+  bar.innerHTML = '';
+  sugg.slice(0, 4).forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'sugg-item' + (i === 0 && (latinBuf || geoBuf) ? ' primary' : '');
+    const kindLabel = { exact: '', completion: '↳', verbatim: 'abc', prediction: '→' }[s.kind] || '';
+    d.innerHTML = escapeHtml(s.text) + (kindLabel ? '<span class="k">' + kindLabel + '</span>' : '');
+    d.onclick = () => tapSuggestion(i);
+    bar.appendChild(d);
+  });
+
+  // keyboard rows
+  const rows = document.getElementById('rows');
+  rows.innerHTML = '';
+  const layout = mode === 'A' ? LAYOUT_LATIN : LAYOUT_GEO;
+  for (const row of layout) {
+    const r = document.createElement('div');
+    r.className = 'row';
+    for (const k of row) {
+      const el = document.createElement('div');
+      let label = k, cls = 'key';
+      if (k === 'SHIFT' || k === '⇧') { label = '⇧'; cls += ' special'; if (shift) el.style.background = '#4f8ef7'; }
+      else if (k === 'BKSP') { label = '⌫'; cls += ' special'; }
+      else if (k === 'SPACE') { label = mode === 'A' ? 'space · სივრცე' : 'სივრცე'; cls += ' wide'; el.style.fontSize = '13px'; }
+      else if (k === 'RET') { label = '⏎'; cls += ' ret special'; }
+      else if (k === '123') { label = '123'; cls += ' special'; }
+      else if (mode === 'B' && shift && GEO_SHIFT[k]) { label = GEO_SHIFT[k]; }
+      else if (mode === 'A' && shift) { label = k.toUpperCase(); }
+      el.className = cls;
+      el.textContent = label;
+      if (mode === 'B' && GEO_SHIFT[k] && !shift) {
+        const h = document.createElement('span'); h.className = 'hint'; h.textContent = GEO_SHIFT[k];
+        el.appendChild(h);
+      }
+      el.onpointerdown = (e) => { e.preventDefault(); onKey(k); };
+      r.appendChild(el);
+    }
+    rows.appendChild(r);
+  }
+}
+
+function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+// ===== hardware keyboard =====
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'Backspace') { e.preventDefault(); backspace(); return; }
+  if (e.key === ' ') { e.preventDefault(); space(); return; }
+  if (e.key === 'Enter') { e.preventDefault(); committed.push('\n'); lastCommit = null; render(); return; }
+  if (/^[a-zA-Z]$/.test(e.key)) {
+    e.preventDefault();
+    if (mode === 'A') { latinBuf += e.key; lastCommit = null; render(); }
+    else {
+      // map physical latin key to Georgian layout position (standard Georgian layout)
+      const map = { q:'ქ',w:'წ',e:'ე',r:'რ',t:'ტ',y:'ყ',u:'უ',i:'ი',o:'ო',p:'პ',
+        a:'ა',s:'ს',d:'დ',f:'ფ',g:'გ',h:'ჰ',j:'ჯ',k:'კ',l:'ლ',
+        z:'ზ',x:'ხ',c:'ც',v:'ვ',b:'ბ',n:'ნ',m:'მ',
+        T:'თ',W:'ჭ',R:'ღ',S:'შ',Z:'ძ',C:'ჩ',J:'ჟ' };
+      const ch = map[e.key] || map[e.key.toLowerCase()];
+      if (ch) { geoBuf += ch; lastCommit = null; render(); }
+    }
+    return;
+  }
+  if (/^[0-9.,!?;:'"-]$/.test(e.key)) {
+    e.preventDefault();
+    if (latinBuf) space();
+    committed.push(e.key); lastCommit = null; render();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
