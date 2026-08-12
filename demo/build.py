@@ -11,3 +11,7 @@ tpl = open(f'{root}/demo/template.html').read()
 out = tpl.replace('__WORDS__', words_s).replace('__BIGRAMS__', bigrams_s).replace('__ENGINE__', engine)
 open(f'{root}/demo/index.html', 'w').write(out)
 print('built demo/index.html: %.1f MB' % (os.path.getsize(f'{root}/demo/index.html') / 1e6))
+# Also publish to docs/ for GitHub Pages
+import shutil
+shutil.copyfile(f'{root}/demo/index.html', f'{root}/docs/index.html')
+print('copied to docs/index.html (GitHub Pages)')
