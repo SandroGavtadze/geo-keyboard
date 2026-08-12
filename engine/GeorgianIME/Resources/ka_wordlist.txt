@@ -1,0 +1,1 @@
+# TODO: add Georgian word list (one word per line)
