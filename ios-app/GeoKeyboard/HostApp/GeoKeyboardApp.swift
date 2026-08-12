@@ -63,8 +63,9 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("პარამეტრები")
-            .onChange(of: mode) { _, new in AppSettings.defaultMode = new }
-            .onChange(of: autocorrect) { _, new in AppSettings.autocorrectEnabled = new }
+            .onChange(of: mode) { newValue in AppSettings.defaultMode = newValue }
+            .onChange(of: autocorrect) { newValue in AppSettings.autocorrectEnabled = newValue }
         }
     }
 }
+

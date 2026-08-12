@@ -1,0 +1,501 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05E9B78B761756DD49E34F8E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C052C36A67E17FC76E35E8 /* AppSettings.swift */; };
+		2CBE241DE015298083C05851 /* GeoKeyboardExt.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65495D47ADEB09AD519E9F7D /* GeoKeyboardExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A28AC1BA741CF801C8D9E7C /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8D9E45995183FD2C9B349C /* KeyboardView.swift */; };
+		6A7BF2B107930FA3849C307F /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474D0505A4AEFE0BEF39E82 /* KeyboardViewController.swift */; };
+		88E94223EC68510AD8EDFABC /* InputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF298577135EA25D172AA0CD /* InputController.swift */; };
+		B1FEECCEC77A6D758BCDD55E /* GeoIME in Frameworks */ = {isa = PBXBuildFile; productRef = 60C34EE02F0FE3D50120E570 /* GeoIME */; };
+		C3681886EE40D38CC494E69A /* GeoIME in Frameworks */ = {isa = PBXBuildFile; productRef = 3506B37D2C1B14149E792096 /* GeoIME */; };
+		CE94F6E664F92C47203263B6 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C052C36A67E17FC76E35E8 /* AppSettings.swift */; };
+		D68EA2F39CBFE0537A4C3BF0 /* GeoKeyboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DD0CC5CB76ABB7B5782C0 /* GeoKeyboardApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		306F2CF6A75D70F8C0EAAE0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 50E6CEEEE49C467DCCB7C1C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A5B8F0CED8E9333FBD8B3A7E;
+			remoteInfo = GeoKeyboardExt;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3F681C38794887B9B506360E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2CBE241DE015298083C05851 /* GeoKeyboardExt.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0C94D3113C8FFD6C4B2E13B6 /* GeoKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeoKeyboard.entitlements; sourceTree = "<group>"; };
+		1E99A67A94E1DB3688ABBFF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3AFF35EAEA68355B3F1F00DF /* GeoKeyboard.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GeoKeyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		414B6AC9302CF7A300877EA0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		65495D47ADEB09AD519E9F7D /* GeoKeyboardExt.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = GeoKeyboardExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		79C052C36A67E17FC76E35E8 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		7A8DD0CC5CB76ABB7B5782C0 /* GeoKeyboardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoKeyboardApp.swift; sourceTree = "<group>"; };
+		8474D0505A4AEFE0BEF39E82 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		A300238542DFD53D642970E6 /* GeoIME */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GeoIME; sourceTree = SOURCE_ROOT; };
+		A9F4F8589513C751B58E75A2 /* GeoKeyboardExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeoKeyboardExt.entitlements; sourceTree = "<group>"; };
+		BF298577135EA25D172AA0CD /* InputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
+		CE9286E5A3376920F17295B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FE8D9E45995183FD2C9B349C /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A249285A893B934BE0AD5CDE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3681886EE40D38CC494E69A /* GeoIME in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E94E9D599416040C9C5EB7D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1FEECCEC77A6D758BCDD55E /* GeoIME in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		13B3829758A7A85D0D5E7822 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3AFF35EAEA68355B3F1F00DF /* GeoKeyboard.app */,
+				65495D47ADEB09AD519E9F7D /* GeoKeyboardExt.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1EFA515D239E72EB58DF5882 /* KeyboardExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A9F4F8589513C751B58E75A2 /* GeoKeyboardExt.entitlements */,
+				CE9286E5A3376920F17295B4 /* Info.plist */,
+				BF298577135EA25D172AA0CD /* InputController.swift */,
+				FE8D9E45995183FD2C9B349C /* KeyboardView.swift */,
+				8474D0505A4AEFE0BEF39E82 /* KeyboardViewController.swift */,
+			);
+			path = KeyboardExtension;
+			sourceTree = "<group>";
+		};
+		28A5E28225953C4643D3EA30 = {
+			isa = PBXGroup;
+			children = (
+				8414217A1DCDD070A56849F2 /* GeoKeyboard */,
+				30BA0C7BD5F6AC44B96EEBB1 /* Packages */,
+				13B3829758A7A85D0D5E7822 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		30BA0C7BD5F6AC44B96EEBB1 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				A300238542DFD53D642970E6 /* GeoIME */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		6D37E8117ED504B9242C4F16 /* HostApp */ = {
+			isa = PBXGroup;
+			children = (
+				0C94D3113C8FFD6C4B2E13B6 /* GeoKeyboard.entitlements */,
+				7A8DD0CC5CB76ABB7B5782C0 /* GeoKeyboardApp.swift */,
+				1E99A67A94E1DB3688ABBFF3 /* Info.plist */,
+				414B6AC9302CF7A300877EA0 /* .gitignore */,
+			);
+			path = HostApp;
+			sourceTree = "<group>";
+		};
+		8414217A1DCDD070A56849F2 /* GeoKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				6D37E8117ED504B9242C4F16 /* HostApp */,
+				1EFA515D239E72EB58DF5882 /* KeyboardExtension */,
+				B1B45093BA09BD2541C25E16 /* Shared */,
+			);
+			path = GeoKeyboard;
+			sourceTree = "<group>";
+		};
+		B1B45093BA09BD2541C25E16 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				79C052C36A67E17FC76E35E8 /* AppSettings.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A5B8F0CED8E9333FBD8B3A7E /* GeoKeyboardExt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CDC7429CF12FDCC855DB420 /* Build configuration list for PBXNativeTarget "GeoKeyboardExt" */;
+			buildPhases = (
+				85386A630EEDB134A81B41DA /* Sources */,
+				E94E9D599416040C9C5EB7D6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GeoKeyboardExt;
+			packageProductDependencies = (
+				60C34EE02F0FE3D50120E570 /* GeoIME */,
+			);
+			productName = GeoKeyboardExt;
+			productReference = 65495D47ADEB09AD519E9F7D /* GeoKeyboardExt.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C2445AE029A329BD352DD453 /* GeoKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E697A26C6E24EF430CC43CB2 /* Build configuration list for PBXNativeTarget "GeoKeyboard" */;
+			buildPhases = (
+				0986C3A9EC907D122F6B58FE /* Sources */,
+				A249285A893B934BE0AD5CDE /* Frameworks */,
+				3F681C38794887B9B506360E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				513ACCB7F4B418D26FF418EA /* PBXTargetDependency */,
+			);
+			name = GeoKeyboard;
+			packageProductDependencies = (
+				3506B37D2C1B14149E792096 /* GeoIME */,
+			);
+			productName = GeoKeyboard;
+			productReference = 3AFF35EAEA68355B3F1F00DF /* GeoKeyboard.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		50E6CEEEE49C467DCCB7C1C4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A5B8F0CED8E9333FBD8B3A7E = {
+						DevelopmentTeam = "";
+					};
+					C2445AE029A329BD352DD453 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 074BD2F24A0A60734799F68A /* Build configuration list for PBXProject "GeoKeyboard" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 28A5E28225953C4643D3EA30;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A34CA37F6179B48FD9CB02E6 /* XCLocalSwiftPackageReference "GeoIME" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 13B3829758A7A85D0D5E7822 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C2445AE029A329BD352DD453 /* GeoKeyboard */,
+				A5B8F0CED8E9333FBD8B3A7E /* GeoKeyboardExt */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0986C3A9EC907D122F6B58FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05E9B78B761756DD49E34F8E /* AppSettings.swift in Sources */,
+				D68EA2F39CBFE0537A4C3BF0 /* GeoKeyboardApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85386A630EEDB134A81B41DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE94F6E664F92C47203263B6 /* AppSettings.swift in Sources */,
+				88E94223EC68510AD8EDFABC /* InputController.swift in Sources */,
+				3A28AC1BA741CF801C8D9E7C /* KeyboardView.swift in Sources */,
+				6A7BF2B107930FA3849C307F /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		513ACCB7F4B418D26FF418EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A5B8F0CED8E9333FBD8B3A7E /* GeoKeyboardExt */;
+			targetProxy = 306F2CF6A75D70F8C0EAAE0A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1C951F0326C23B22C7261155 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GeoKeyboard/HostApp/GeoKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = GeoKeyboard/HostApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboard;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1F2C9B889892A284E698FA1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		7151AFB5A233A9FBE1718B44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GeoKeyboard/KeyboardExtension/GeoKeyboardExt.entitlements;
+				INFOPLIST_FILE = GeoKeyboard/KeyboardExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboardExt;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7A88DFE49B513E086C803E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = GeoKeyboard/KeyboardExtension/GeoKeyboardExt.entitlements;
+				INFOPLIST_FILE = GeoKeyboard/KeyboardExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboardExt;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E2F62C73B7D853070E074708 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GeoKeyboard/HostApp/GeoKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = GeoKeyboard/HostApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboard;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E41A6C519CD8CAE70C7EA1E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		074BD2F24A0A60734799F68A /* Build configuration list for PBXProject "GeoKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E41A6C519CD8CAE70C7EA1E3 /* Debug */,
+				1F2C9B889892A284E698FA1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6CDC7429CF12FDCC855DB420 /* Build configuration list for PBXNativeTarget "GeoKeyboardExt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7151AFB5A233A9FBE1718B44 /* Debug */,
+				B7A88DFE49B513E086C803E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E697A26C6E24EF430CC43CB2 /* Build configuration list for PBXNativeTarget "GeoKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C951F0326C23B22C7261155 /* Debug */,
+				E2F62C73B7D853070E074708 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A34CA37F6179B48FD9CB02E6 /* XCLocalSwiftPackageReference "GeoIME" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = GeoIME;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3506B37D2C1B14149E792096 /* GeoIME */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GeoIME;
+		};
+		60C34EE02F0FE3D50120E570 /* GeoIME */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GeoIME;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 50E6CEEEE49C467DCCB7C1C4 /* Project object */;
+}
