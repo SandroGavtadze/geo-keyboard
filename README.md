@@ -53,3 +53,7 @@ A hardware keyboard works in both modes.
 
 - Word/bigram frequencies: [Crúbadán](http://crubadan.org/) by Kevin Scannell — CC-BY 4.0 (via [GeoWordsDatabase](https://github.com/bumbeishvili/GeoWordsDatabase), MIT).
 - The engine and app code: MIT.
+
+## Legacy reference
+
+`docs/AGENT-TASKS.md`, `docs/ARCHITECTURE.md`, `engine/GeorgianIME/`, `ios/`, `layouts/`, and the `geo-keyboard/` Xcode project are the earlier scaffold, kept for reference. Note: that Xcode project is a Messages extension (wrong target type for a keyboard) — the real app will use a Custom Keyboard Extension target.
