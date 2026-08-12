@@ -45,13 +45,13 @@
 /* Begin PBXFileReference section */
 		0C94D3113C8FFD6C4B2E13B6 /* GeoKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeoKeyboard.entitlements; sourceTree = "<group>"; };
 		1E99A67A94E1DB3688ABBFF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		37461989BDDFC313CF708590 /* .gitignore */ = {isa = PBXFileReference; path = .gitignore; sourceTree = "<group>"; };
 		3AFF35EAEA68355B3F1F00DF /* GeoKeyboard.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GeoKeyboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		414B6AC9302CF7A300877EA0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		65495D47ADEB09AD519E9F7D /* GeoKeyboardExt.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = GeoKeyboardExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		79C052C36A67E17FC76E35E8 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		7A8DD0CC5CB76ABB7B5782C0 /* GeoKeyboardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoKeyboardApp.swift; sourceTree = "<group>"; };
 		8474D0505A4AEFE0BEF39E82 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
-		A300238542DFD53D642970E6 /* GeoIME */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GeoIME; sourceTree = SOURCE_ROOT; };
+		A300238542DFD53D642970E6 /* GeoIME */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GeoIME; path = GeoIME; sourceTree = SOURCE_ROOT; };
 		A9F4F8589513C751B58E75A2 /* GeoKeyboardExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GeoKeyboardExt.entitlements; sourceTree = "<group>"; };
 		BF298577135EA25D172AA0CD /* InputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputController.swift; sourceTree = "<group>"; };
 		CE9286E5A3376920F17295B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -119,10 +119,10 @@
 		6D37E8117ED504B9242C4F16 /* HostApp */ = {
 			isa = PBXGroup;
 			children = (
+				37461989BDDFC313CF708590 /* .gitignore */,
 				0C94D3113C8FFD6C4B2E13B6 /* GeoKeyboard.entitlements */,
 				7A8DD0CC5CB76ABB7B5782C0 /* GeoKeyboardApp.swift */,
 				1E99A67A94E1DB3688ABBFF3 /* Info.plist */,
-				414B6AC9302CF7A300877EA0 /* .gitignore */,
 			);
 			path = HostApp;
 			sourceTree = "<group>";
