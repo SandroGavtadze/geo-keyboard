@@ -40,13 +40,27 @@ Open `demo/index.html`. It has **two typing experiences** to compare:
 
 A hardware keyboard works in both modes.
 
-## Roadmap to the real iOS keyboard
+## The iOS app (`ios-app/`)
 
-1. Port `engine/translit.js` to a Swift package (pure logic, unit-testable; trie can be a precompiled binary blob for fast cold-start — keyboard extensions have tight memory/launch budgets).
-2. Xcode project: App target (onboarding, settings, personal dictionary) + **Custom Keyboard Extension** target (`com.apple.product-type.app-extension` with `NSExtensionPointIdentifier = com.apple.keyboard-service`). *Not* an iMessage/Messages extension.
-3. App Group for shared user dictionary (SQLite) between app and extension.
-4. Learning: promote repeatedly-typed unknown words into the user lexicon; personal bigram counts for better predictions.
-5. Better corpus: rebuild frequency list from Georgian Wikipedia + web corpus (Crúbadán is good but dated); consider hunspell ka_GE (143k forms) for spellcheck coverage.
+The Swift port lives in `ios-app/`:
+
+```
+ios-app/GeoIME/          Swift package: engine port + bundled dictionary + 82-case test suite
+ios-app/GeoKeyboard/     Host app (onboarding, settings) + Custom Keyboard Extension sources
+ios-app/project.yml      XcodeGen spec (correct keyboard-service extension target)
+ios-app/SETUP.md         ⭐ step-by-step build & install guide
+```
+
+Both typing modes ship: users pick a default in the app's Settings and can flip
+anytime with the აბგ/abc key on the keyboard. Start with `ios-app/SETUP.md`.
+
+## Roadmap
+
+1. ~~Port engine to Swift package~~ ✅ (`ios-app/GeoIME`, verify with `swift test` on a Mac)
+2. ~~Xcode project with **Custom Keyboard Extension** target~~ ✅ (`ios-app/project.yml` — *not* an iMessage extension)
+3. On-device learning: promote repeatedly-typed unknown words into a user lexicon (SQLite in the App Group); personal bigram counts.
+4. Better corpus: conversational sources so chat words outrank literary ones; consider hunspell ka_GE (143k forms) for spellcheck coverage.
+5. Precompiled binary trie for faster cold-start if TSV parse feels slow on older devices.
 6. Ship: TestFlight with Georgian community feedback loop.
 
 ## Data licenses

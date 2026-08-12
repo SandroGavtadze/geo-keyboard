@@ -1,0 +1,71 @@
+# XcodeGen spec — run `xcodegen generate` in ios-app/ to (re)create GeoKeyboard.xcodeproj
+# Install XcodeGen once with: brew install xcodegen
+name: GeoKeyboard
+options:
+  bundleIdPrefix: com.sandrogavtadze
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+packages:
+  GeoIME:
+    path: GeoIME
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""   # ← set your Apple Team ID, or pick a team in Xcode → Signing
+
+targets:
+  GeoKeyboard:
+    type: application
+    platform: iOS
+    sources:
+      - GeoKeyboard/HostApp
+      - GeoKeyboard/Shared
+    dependencies:
+      - package: GeoIME
+      - target: GeoKeyboardExt
+        embed: true
+    info:
+      path: GeoKeyboard/HostApp/Info.plist
+      properties:
+        CFBundleDisplayName: GeoKeyboard
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    entitlements:
+      path: GeoKeyboard/HostApp/GeoKeyboard.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.sandrogavtadze.geokeyboard
+
+  GeoKeyboardExt:
+    type: app-extension
+    platform: iOS
+    sources:
+      - GeoKeyboard/KeyboardExtension
+      - GeoKeyboard/Shared
+    dependencies:
+      - package: GeoIME
+    info:
+      path: GeoKeyboard/KeyboardExtension/Info.plist
+      properties:
+        CFBundleDisplayName: ქართული · GeoKeyboard
+        NSExtension:
+          # ⬇️ THE critical part — this makes it a system keyboard,
+          # not a Messages/iMessage extension.
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            PrimaryLanguage: ka
+            IsASCIICapable: true
+            PrefersRightToLeft: false
+            RequestsOpenAccess: false
+    entitlements:
+      path: GeoKeyboard/KeyboardExtension/GeoKeyboardExt.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.sandrogavtadze.geokeyboard
