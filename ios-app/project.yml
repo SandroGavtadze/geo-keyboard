@@ -45,6 +45,10 @@ targets:
   GeoKeyboardExt:
     type: app-extension
     platform: iOS
+    settings:
+      base:
+        # Extensions MUST be namespaced under the parent app's bundle ID
+        PRODUCT_BUNDLE_IDENTIFIER: com.sandrogavtadze.GeoKeyboard.keyboard
     sources:
       - GeoKeyboard/KeyboardExtension
       - GeoKeyboard/Shared
