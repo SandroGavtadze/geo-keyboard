@@ -344,7 +344,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboardExt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboard.keyboard;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -360,7 +360,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboardExt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sandrogavtadze.GeoKeyboard.keyboard;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

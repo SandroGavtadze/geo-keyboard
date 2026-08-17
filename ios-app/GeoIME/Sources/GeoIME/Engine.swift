@@ -18,11 +18,21 @@ public struct Suggestion: Hashable, Sendable {
 /// EngineTests mirrors the JS test harness to keep the two in lockstep.
 public final class Engine {
 
+    /// Memory-lean trie node. Keyboard extensions are jetsam-killed around
+    /// ~60 MB; a [Character: TrieNode] Dictionary per node blew that budget
+    /// (the extension died seconds after launch in Simulator testing), so
+    /// children live in a compact array — average branching factor is small,
+    /// linear scan is fast.
     final class TrieNode {
-        var children: [Character: TrieNode] = [:]
-        var freq: Int = 0          // >0 iff a word ends here
-        var best: Int = 0          // max word freq in subtree (for completion walk)
-        var word: String? = nil    // cached full word for terminal nodes
+        var children: ContiguousArray<(Character, TrieNode)> = []
+        var freq: Int32 = 0        // >0 iff a word ends here
+        var best: Int32 = 0        // max word freq in subtree (for completion walk)
+        var word: String? = nil    // full word, terminal nodes only
+
+        @inline(__always) func child(_ c: Character) -> TrieNode? {
+            for (ch, n) in children where ch == c { return n }
+            return nil
+        }
     }
 
     private let root = TrieNode()
@@ -45,7 +55,12 @@ public final class Engine {
         for (k, v) in bg { self.bigrams[k] = v.sorted { $0.1 > $1.1 } }
     }
 
-    /// Loads the bundled 49k-word frequency list + bigrams.
+    /// Word cap for the bundled dictionary — memory guardrail for the
+    /// extension process. Top-30k covers everyday vocabulary; raise once the
+    /// trie is a precompiled binary blob.
+    public static var bundledWordLimit = 30_000
+
+    /// Loads the bundled frequency list + bigrams.
     /// Parsing takes ~100–300 ms on device; call off the main thread.
     public static func loadBundled() -> Engine {
         func rows(_ name: String) -> [[Substring]] {
@@ -53,10 +68,11 @@ public final class Engine {
                   let raw = try? String(contentsOf: url, encoding: .utf8) else { return [] }
             return raw.split(separator: "\n").map { $0.split(separator: "\t") }
         }
-        let words: [(String, Int)] = rows("ka_words_freq").compactMap {
+        var words: [(String, Int)] = rows("ka_words_freq").compactMap {
             guard $0.count == 2, let f = Int($0[1]) else { return nil }
             return (String($0[0]), f)
         }
+        if words.count > bundledWordLimit { words = Array(words.prefix(bundledWordLimit)) }
         let bigrams: [(String, String, Int)] = rows("ka_bigrams").compactMap {
             guard $0.count == 3, let c = Int($0[2]) else { return nil }
             return (String($0[0]), String($0[1]), c)
@@ -65,14 +81,20 @@ public final class Engine {
     }
 
     private func insert(_ word: String, freq: Int) {
+        let f = Int32(clamping: freq)
         var node = root
         for ch in word {
-            if node.best < freq { node.best = freq }
-            if node.children[ch] == nil { node.children[ch] = TrieNode() }
-            node = node.children[ch]!
+            if node.best < f { node.best = f }
+            if let next = node.child(ch) {
+                node = next
+            } else {
+                let next = TrieNode()
+                node.children.append((ch, next))
+                node = next
+            }
         }
-        if node.best < freq { node.best = freq }
-        node.freq = freq
+        if node.best < f { node.best = f }
+        node.freq = f
         node.word = word
         freqs[word] = freq
     }
@@ -156,7 +178,7 @@ public final class Engine {
                 continue
             }
             for opt in options(at: pos, in: chars) {
-                guard let child = node.children[opt.char] else { continue }
+                guard let child = node.child(opt.char) else { continue }
                 let npos = pos + opt.length
                 let npen = pen + opt.penalty
                 let id = ObjectIdentifier(child)
@@ -209,7 +231,7 @@ public final class Engine {
                 found += 1
             }
             if depth < 8 {
-                for c in n.children.values { heap.append((c, depth + 1)) }
+                for (_, c) in n.children { heap.append((c, depth + 1)) }
             }
         }
     }
@@ -217,7 +239,7 @@ public final class Engine {
     private func georgianPrefix(_ token: String, max: Int) -> [Suggestion] {
         var node = root
         for ch in token {
-            guard let next = node.children[ch] else {
+            guard let next = node.child(ch) else {
                 return [Suggestion(text: token, score: 0, kind: .verbatim)]
             }
             node = next

@@ -13,7 +13,7 @@ final class EngineTests: XCTestCase {
     }
 
     func testDictionaryLoaded() {
-        XCTAssertGreaterThan(Self.engine.wordCount, 45_000, "bundled dictionary should load")
+        XCTAssertGreaterThan(Self.engine.wordCount, 25_000, "bundled dictionary should load (capped at Engine.bundledWordLimit)")
         XCTAssertTrue(Self.engine.isWord("და"))
     }
 
