@@ -33,7 +33,7 @@ final class KeyboardViewController: UIInputViewController {
 
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
-        // Caret moved, field switched, or external edit — recompute suggestions.
-        controller.refreshSuggestions()
+        // Caret moved, field switched, or external edit — reconcile composition.
+        controller.reconcileWithProxy()
     }
 }
