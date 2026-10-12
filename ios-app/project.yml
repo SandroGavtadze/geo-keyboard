@@ -14,7 +14,12 @@ packages:
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    DEVELOPMENT_TEAM: ""   # ← set your Apple Team ID, or pick a team in Xcode → Signing
+    DEVELOPMENT_TEAM: DJU9LNCFNG
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+fileGroups:
+  - GeoKeyboard.storekit
 
 targets:
   GeoKeyboard:
@@ -27,10 +32,20 @@ targets:
       - package: GeoIME
       - target: GeoKeyboardExt
         embed: true
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"
+    scheme:
+      # Local StoreKit testing — buy Pro in the Simulator without App Store Connect.
+      storeKitConfiguration: GeoKeyboard.storekit
     info:
       path: GeoKeyboard/HostApp/Info.plist
       properties:
         CFBundleDisplayName: GeoKeyboard
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -58,6 +73,8 @@ targets:
       path: GeoKeyboard/KeyboardExtension/Info.plist
       properties:
         CFBundleDisplayName: ქართული · GeoKeyboard
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
           # ⬇️ THE critical part — this makes it a system keyboard,
           # not a Messages/iMessage extension.

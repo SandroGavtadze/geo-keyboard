@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct GeoKeyboardApp: App {
+    @StateObject private var proStore = ProStore()
+
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -9,7 +11,10 @@ struct GeoKeyboardApp: App {
                     .tabItem { Label("დაყენება", systemImage: "keyboard") }
                 SettingsView()
                     .tabItem { Label("პარამეტრები", systemImage: "gearshape") }
+                ProView()
+                    .tabItem { Label("Pro", systemImage: "star") }
             }
+            .environmentObject(proStore)
         }
     }
 }
@@ -55,7 +60,7 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.inline)
                     .labelsHidden()
-                    Text("კლავიატურაზე аბგ/abc ღილაკით ნებისმიერ დროს გადართავ.")
+                    Text("კლავიატურაზე აბგ/abc ღილაკით ნებისმიერ დროს გადართავ.")
                         .font(.footnote).foregroundStyle(.secondary)
                 }
                 Section {
