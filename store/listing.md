@@ -20,11 +20,11 @@ Copy-paste source for App Store Connect. Character limits in parentheses.
 
 ## Listing (English U.S.)
 
-**Name (30):** Kartulad: abc → ქართული
+**Name (30):** Kartulad: QWERTY to Georgian
 
-If App Store Connect rejects the arrow, use `Kartulad: abc to ქართული`.
+The name field only accepts Latin characters — Georgian script and "→" are rejected.
 
-**Subtitle (30):** Georgian keyboard for QWERTY
+**Subtitle (30):** Phonetic keyboard, autocorrect
 
 **Promotional text (170):**
 Type Georgian the way you already text it — in Latin letters. Kartulad converts as you go: saxlshi xar? → სახლში ხარ?
@@ -89,7 +89,7 @@ gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
 ყველაფერი უფასოა: წერა, ცოცხალი გადაყვანა, ავტოკორექცია და შემდეგი სიტყვის შეთავაზება. რეკლამის, გამოწერისა და აპშიდა შენაძენების გარეშე.
 
 **Keywords (100):**
-kartuli,qartuli,translit,transliteration,latin,phonetic,კლავიატურა,ქართულად,georgia,tbilisi,ime
+kartuli,qartuli,translit,transliteration,latin,კლავიატურა,ქართული,ქართულად,georgia,tbilisi,ime
 
 **What's New (first version):** Initial release.
 
