@@ -2,7 +2,7 @@ import XCTest
 @testable import GeoIME
 
 /// Mirrors engine/test.js — same 82 phrases, same accuracy expectations.
-/// JS reference results: top-1 97.6%, top-3 100%.
+/// JS reference results: top-1 98.8%, top-3 100%.
 final class EngineTests: XCTestCase {
 
     static var engine: Engine!
@@ -59,9 +59,9 @@ final class EngineTests: XCTestCase {
             else { misses.append("\(latin) -> wanted \(expected), got \(texts.prefix(3).joined(separator: "|"))") }
         }
         let n = Self.cases.count
-        // JS reference: 80/82 top-1, 82/82 top-3. Allow 1 case of slack for
+        // JS reference: 81/82 top-1, 82/82 top-3. Allow 1 case of slack for
         // platform differences in tie-breaking, no more.
-        XCTAssertGreaterThanOrEqual(top1, 79, "top-1 regressed vs JS reference (80/82). Misses: \(misses)")
+        XCTAssertGreaterThanOrEqual(top1, 80, "top-1 regressed vs JS reference (81/82), got \(top1). Misses: \(misses)")
         XCTAssertGreaterThanOrEqual(top3, n - 1, "top-3 regressed vs JS reference (82/82). Misses: \(misses)")
     }
 

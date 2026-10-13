@@ -24,7 +24,7 @@ Everything runs on-device. No network, no "Full Access" needed.
 ```
 engine/translit.js   reference engine implementation (JS) — will be ported to Swift
 engine/test.js       accuracy + latency harness (node engine/test.js)
-data/ka_words_freq.tsv   49,257 Georgian words with corpus frequencies
+data/ka_words_freq.tsv   49,259 Georgian words with corpus frequencies
 data/ka_bigrams.tsv      22,634 word bigrams for next-word prediction
 tools/build_dictionary.py   compiles data/*.tsv into the binary dictionary the iOS engine memory-maps
 demo/template.html   demo source (dictionary + engine get inlined at build)
