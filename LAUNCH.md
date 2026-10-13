@@ -51,7 +51,7 @@ https://sandrogavtadze.github.io/geo-keyboard/privacy.html — open it and confi
 
 ## 6. Screenshots
 
-Shot list and sizes are in `store/listing.md`. Capture in Simulator on a 6.9" and a 6.5" device (⌘S), upload under the version's Previews and Screenshots for both languages.
+Shot list and sizes are in `store/listing.md`. The required slot is "iPhone with Dynamic Island (medium display)": upload the five files from `store/screenshots/6.3/`. The 6.9" and 6.5" sets are optional.
 
 ## 7. Archive and TestFlight
 

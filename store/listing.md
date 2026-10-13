@@ -113,7 +113,15 @@ The app is free and has no in-app purchases.
 
 ## Screenshots
 
-Required sizes: **6.9"** (iPhone 16/17 Pro Max, 1320 × 2868) and **6.5"** (iPhone 11 Pro Max / 14 Plus, 1284 × 2778 or 1242 × 2688). Same five shots in each.
+Files are in `store/screenshots/`, same five shots in each folder:
+
+| Folder | Size | App Store Connect slot |
+|---|---|---|
+| `6.3/` | 1206 × 2622 | iPhone with Dynamic Island (medium display) — **required** |
+| `6.9/` | 1320 × 2868 | iPhone with Dynamic Island (large display) — optional |
+| `6.5/` | 1284 × 2778 | iPhone with Face ID (large display) — optional |
+
+`6.9/` are the original simulator captures; the other two are scaled from them.
 
 1. **Messages, mid-word** — `saxlshi` typed, marked text + suggestion bar showing სახლში. Caption: “Type Latin. Get ქართული.”
 2. **Messages, finished sentence** — “გამარჯობა, როგორ ხარ?” sent as a bubble, keyboard visible. Caption: “Converts as you type.”
