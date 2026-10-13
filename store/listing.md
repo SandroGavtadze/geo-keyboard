@@ -16,7 +16,8 @@ Copy-paste source for App Store Connect. Character limits in parentheses.
 | Price | Free (no in-app purchases) |
 | Privacy Policy URL | https://sandrogavtadze.github.io/geo-keyboard/privacy.html |
 | Support URL | https://github.com/SandroGavtadze/geo-keyboard/issues |
-| Marketing URL | https://sandrogavtadze.github.io/geo-keyboard/ |
+| Marketing URL | https://sandrogavtadze.github.io/geo-keyboard/ (optional; this is the web prototype) |
+| Copyright | `2026 Alexandre Gavtadze` (no © symbol) |
 
 ## Listing (English U.S.)
 
@@ -102,10 +103,11 @@ Data collection: **No, we do not collect data from this app.**
 Kartulad is a custom keyboard extension for typing Georgian phonetically in Latin letters.
 
 To test:
-1. Launch the app, then Settings → General → Keyboard → Keyboards → Add New Keyboard… → Kartulad.
-2. Open Notes or Messages, hold the globe key and select Kartulad.
+1. Launch the app, then go to Settings → General → Keyboard → Keyboards → Add New Keyboard… → Kartulad.
+2. Open Notes or Messages, hold the globe key and select "ქართული · Kartulad".
 3. Type `saxlshi xar` — it converts live to “სახლში ხარ”. Space accepts the top candidate.
 4. The აბგ / abc key switches between Latin-conversion mode and direct Georgian letters; 123 opens numbers and symbols.
+5. After a word is committed, next-word predictions appear in the bar above the keys.
 
 The keyboard does NOT request Full Access (RequestsOpenAccess = false) and makes no network requests. No account or login is needed.
 
