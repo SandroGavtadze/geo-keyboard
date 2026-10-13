@@ -18,9 +18,6 @@ settings:
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
 
-fileGroups:
-  - GeoKeyboard.storekit
-
 targets:
   GeoKeyboard:
     type: application
@@ -36,9 +33,6 @@ targets:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"
-    scheme:
-      # Local StoreKit testing — buy Pro in the Simulator without App Store Connect.
-      storeKitConfiguration: GeoKeyboard.storekit
     info:
       path: GeoKeyboard/HostApp/Info.plist
       properties:

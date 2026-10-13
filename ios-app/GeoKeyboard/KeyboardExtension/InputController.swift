@@ -231,9 +231,7 @@ final class InputController: ObservableObject {
         guard let engine else { suggestions = []; return }
         let token = currentToken
         if token.isEmpty {
-            suggestions = AppSettings.nextWordPredictionEnabled
-                ? engine.predictNext(after: previousWord, max: 3)
-                : []
+            suggestions = engine.predictNext(after: previousWord, max: 3)
         } else {
             suggestions = engine.suggest(token, max: 4, prev: previousWord)
         }

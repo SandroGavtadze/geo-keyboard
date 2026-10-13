@@ -2,8 +2,6 @@ import SwiftUI
 
 @main
 struct GeoKeyboardApp: App {
-    @StateObject private var proStore = ProStore()
-
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -11,10 +9,7 @@ struct GeoKeyboardApp: App {
                     .tabItem { Label("დაყენება", systemImage: "keyboard") }
                 SettingsView()
                     .tabItem { Label("პარამეტრები", systemImage: "gearshape") }
-                ProView()
-                    .tabItem { Label("Pro", systemImage: "star") }
             }
-            .environmentObject(proStore)
         }
     }
 }
