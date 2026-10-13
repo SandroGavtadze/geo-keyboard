@@ -94,7 +94,7 @@ struct KeyboardView: View {
             HStack(spacing: 5) {
                 specialKey("123", width: 42) { layer = .numbers }
                 specialKey(controller.mode == .latin ? "აბგ" : "abc", width: 46) { controller.toggleMode() }
-                globeKey
+                if controller.needsGlobeKey { globeKey }
                 spaceKey
                 specialKey("⏎", width: 56) { controller.returnKey() }
             }
@@ -114,7 +114,7 @@ struct KeyboardView: View {
             }
             HStack(spacing: 5) {
                 specialKey(controller.mode == .latin ? "abc" : "აბგ", width: 52) { layer = .letters }
-                globeKey
+                if controller.needsGlobeKey { globeKey }
                 spaceKey
                 specialKey("⏎", width: 56) { controller.returnKey() }
             }

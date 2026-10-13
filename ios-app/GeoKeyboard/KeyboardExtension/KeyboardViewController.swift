@@ -31,6 +31,14 @@ final class KeyboardViewController: UIInputViewController {
         height.isActive = true
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // Only reliable once the view is in the hierarchy, and can change with rotation.
+        if controller.needsGlobeKey != needsInputModeSwitchKey {
+            controller.needsGlobeKey = needsInputModeSwitchKey
+        }
+    }
+
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
         // Caret moved, field switched, or external edit — reconcile composition.

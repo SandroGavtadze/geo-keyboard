@@ -19,6 +19,8 @@ final class InputController: ObservableObject {
 
     @Published var mode: AppSettings.KeyboardMode = AppSettings.defaultMode
     @Published var suggestions: [Suggestion] = []
+    /// False on devices where iOS already shows its own globe key below the keyboard.
+    @Published var needsGlobeKey = true
     @Published var shiftOn = false
     @Published var engineReady = false
 
