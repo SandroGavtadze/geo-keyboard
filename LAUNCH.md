@@ -1,4 +1,4 @@
-# Launching GeoKeyboard on the App Store
+# Launching Kartulad on the App Store
 
 End-to-end checklist. Copy for every field lives in [store/listing.md](store/listing.md).
 
@@ -36,13 +36,13 @@ The app is free with no in-app purchases, so the Paid Apps agreement, tax and ba
 
 ## 4. Create the app record
 
-App Store Connect → Apps → + → New App: platform iOS, name / language / bundle ID / SKU from `store/listing.md`.
+App Store Connect → Apps → + → New App: platform iOS, name / language / bundle ID / SKU from `store/listing.md`. Choose the app's bundle ID (`com.sandrogavtadze.GeoKeyboard`), not the keyboard extension's — it cannot be changed afterwards. If only the extension's ID is offered, register the app's ID first (step 2).
 
 Then fill in:
 - **App Information:** category, age rating, Privacy Policy URL
 - **Pricing and Availability:** Free, all territories
 - **App Privacy:** “Data Not Collected”
-- **Version 1.0 page:** promotional text, description, keywords, support + marketing URLs — EN, then add Georgian localization
+- **Version 1.0 page:** promotional text, description, keywords, support + marketing URLs — English (U.S.) only; the App Store has no Georgian localization, so the Georgian text sits below the English in the same description
 
 ## 5. Privacy page
 

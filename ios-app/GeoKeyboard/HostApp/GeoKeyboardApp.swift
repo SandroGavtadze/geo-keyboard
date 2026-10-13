@@ -20,8 +20,8 @@ struct OnboardingView: View {
             List {
                 Section("კლავიატურის ჩართვა · Enable the keyboard") {
                     Label("Open Settings → General → Keyboard → Keyboards", systemImage: "1.circle")
-                    Label("Add New Keyboard… → GeoKeyboard", systemImage: "2.circle")
-                    Label("In any app, hold 🌐 and pick GeoKeyboard", systemImage: "3.circle")
+                    Label("Add New Keyboard… → Kartulad", systemImage: "2.circle")
+                    Label("In any app, hold 🌐 and pick Kartulad", systemImage: "3.circle")
                 }
                 Section {
                     Button("Open iOS Settings") {
@@ -35,7 +35,7 @@ struct OnboardingView: View {
                     Text("Full Access არ არის საჭირო. ყველაფერი მუშაობს შენს ტელეფონზე — არაფერი იგზავნება ინტერნეტში.")
                 }
             }
-            .navigationTitle("GeoKeyboard")
+            .navigationTitle("Kartulad")
         }
     }
 }

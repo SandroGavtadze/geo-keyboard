@@ -35,8 +35,8 @@ open GeoKeyboard.xcodeproj
 ## 4. Run it
 
 1. Select the **GeoKeyboard** scheme, choose your iPhone (plugged in or on the same Wi-Fi), press **▶**.
-2. On the phone: Settings → General → Keyboard → Keyboards → **Add New Keyboard…** → GeoKeyboard.
-3. In any app, hold the 🌐 key and pick **ქართული · GeoKeyboard**.
+2. On the phone: Settings → General → Keyboard → Keyboards → **Add New Keyboard…** → Kartulad.
+3. In any app, hold the 🌐 key and pick **ქართული · Kartulad**.
 4. Type `saxlshi xar`, press space — you should see **სახლში ხარ**.
 
 Do **not** enable Full Access — the keyboard doesn't need or ask for it.

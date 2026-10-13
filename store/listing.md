@@ -1,4 +1,4 @@
-# App Store listing — GeoKeyboard
+# App Store listing — Kartulad
 
 Copy-paste source for App Store Connect. Character limits in parentheses.
 
@@ -10,7 +10,7 @@ Copy-paste source for App Store Connect. Character limits in parentheses.
 | Keyboard extension bundle ID | `com.sandrogavtadze.GeoKeyboard.keyboard` |
 | App Group | `group.com.sandrogavtadze.geokeyboard` |
 | SKU | `geokeyboard-ios` |
-| Primary language | English (U.S.); add Georgian localization |
+| Primary language | English (U.S.) — the App Store has no Georgian localization, so the Georgian text goes in the same description |
 | Category | Utilities (secondary: Productivity) |
 | Age rating | 4+ |
 | Price | Free (no in-app purchases) |
@@ -18,17 +18,19 @@ Copy-paste source for App Store Connect. Character limits in parentheses.
 | Support URL | https://github.com/SandroGavtadze/geo-keyboard/issues |
 | Marketing URL | https://sandrogavtadze.github.io/geo-keyboard/ |
 
-## English (U.S.)
+## Listing (English U.S.)
 
-**Name (30):** GeoKeyboard: Georgian Typing
+**Name (30):** Kartulad: abc → ქართული
 
-**Subtitle (30):** Type Latin, get ქართული
+If App Store Connect rejects the arrow, use `Kartulad: abc to ქართული`.
+
+**Subtitle (30):** Georgian keyboard for QWERTY
 
 **Promotional text (170):**
-Type Georgian the way you already text it — in Latin letters. GeoKeyboard converts as you go: saxlshi xar? → სახლში ხარ?
+Type Georgian the way you already text it — in Latin letters. Kartulad converts as you go: saxlshi xar? → სახლში ხარ?
 
 **Description (4000):**
-GeoKeyboard lets you write Georgian without hunting for letters. Type phonetically on the QWERTY layout you already know and the keyboard turns it into proper Georgian script as you type.
+Kartulad lets you write Georgian without hunting for letters. Type phonetically on the QWERTY layout you already know and the keyboard turns it into proper Georgian script as you type.
 
 saxlshi xar? → სახლში ხარ?
 gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
@@ -56,22 +58,9 @@ PRIVATE BY DESIGN
 FREE
 Everything is free: typing, live conversion, autocorrect and next-word predictions. No ads, no subscription, no in-app purchases.
 
-**Keywords (100):**
-georgian,keyboard,kartuli,qartuli,translit,latin,ქართული,კლავიატურა,georgia,tbilisi,phonetic,ime
+— ქართულად —
 
-**What's New (first version):** Initial release.
-
-## Georgian (ქართული)
-
-**Name (30):** GeoKeyboard: ქართული
-
-**Subtitle (30):** წერე ლათინურად — მიიღე ქართული
-
-**Promotional text (170):**
-წერე ქართულად ისე, როგორც ისედაც წერ — ლათინური ასოებით. GeoKeyboard თავად გადაიყვანს: saxlshi xar? → სახლში ხარ?
-
-**Description:**
-GeoKeyboard-ით ქართულად წერა აღარ მოითხოვს ასოების ძებნას. აკრიფე ლათინურად, ნაცნობ QWERTY განლაგებაზე, და კლავიატურა წერის პროცესშივე გადაიყვანს ტექსტს ქართულ დამწერლობაზე.
+Kartulad-ით ქართულად წერა აღარ მოითხოვს ასოების ძებნას. აკრიფე ლათინურად, ნაცნობ QWERTY განლაგებაზე, და კლავიატურა წერის პროცესშივე გადაიყვანს ტექსტს ქართულ დამწერლობაზე.
 
 saxlshi xar? → სახლში ხარ?
 gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
@@ -100,7 +89,9 @@ gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
 ყველაფერი უფასოა: წერა, ცოცხალი გადაყვანა, ავტოკორექცია და შემდეგი სიტყვის შეთავაზება. რეკლამის, გამოწერისა და აპშიდა შენაძენების გარეშე.
 
 **Keywords (100):**
-ქართული,კლავიატურა,ლათინური,ტრანსლიტი,საქართველო,keyboard,georgian,kartuli,qartuli
+kartuli,qartuli,translit,transliteration,latin,phonetic,კლავიატურა,ქართულად,georgia,tbilisi,ime
+
+**What's New (first version):** Initial release.
 
 ## App Privacy (nutrition label)
 
@@ -108,11 +99,11 @@ Data collection: **No, we do not collect data from this app.**
 
 ## App Review notes
 
-GeoKeyboard is a custom keyboard extension for typing Georgian phonetically in Latin letters.
+Kartulad is a custom keyboard extension for typing Georgian phonetically in Latin letters.
 
 To test:
-1. Launch the app, then Settings → General → Keyboard → Keyboards → Add New Keyboard… → GeoKeyboard.
-2. Open Notes or Messages, hold the globe key and select GeoKeyboard.
+1. Launch the app, then Settings → General → Keyboard → Keyboards → Add New Keyboard… → Kartulad.
+2. Open Notes or Messages, hold the globe key and select Kartulad.
 3. Type `saxlshi xar` — it converts live to “სახლში ხარ”. Space accepts the top candidate.
 4. The აბგ / abc key switches between Latin-conversion mode and direct Georgian letters; 123 opens numbers and symbols.
 
