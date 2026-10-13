@@ -110,7 +110,7 @@ final class InputController: ObservableObject {
             let text = AppSettings.autocorrectEnabled ? topCandidate : (engine?.literal(composedLatin) ?? composedLatin)
             let latin = composedLatin
             composedLatin = ""
-            proxy.insertText(text)   // replaces the marked text
+            commit(text, to: proxy)
             proxy.insertText(" ")
             lastCommit = (latin: latin, georgian: text)
         } else {
@@ -160,7 +160,7 @@ final class InputController: ObservableObject {
         } else if mode == .latin {
             let latin = composedLatin
             composedLatin = ""
-            proxy.insertText(suggestion.text)   // replaces the marked text
+            commit(suggestion.text, to: proxy)
             proxy.insertText(" ")
             if !latin.isEmpty { lastCommit = (latin: latin, georgian: suggestion.text) }
         } else {
@@ -184,13 +184,13 @@ final class InputController: ObservableObject {
     /// longer at the caret (field cleared via ⓧ, caret moved, external edit),
     /// the composition is stale and must be dropped.
     func reconcileWithProxy() {
-        if composedLatin.isEmpty { refreshSuggestions(); return }
-        let before = proxy?.documentContextBeforeInput ?? ""
-        let preview = topCandidate
-        if before.isEmpty || !before.hasSuffix(preview) {
-            composedLatin = ""
-            refreshSuggestions()
-        }
+        guard !composedLatin.isEmpty else { refreshSuggestions(); return }
+        // documentContextBeforeInput never includes marked text, so we can't
+        // verify the preview is still at the caret. Let the host keep whatever
+        // preview is on screen as plain text and start clean.
+        composedLatin = ""
+        proxy?.unmarkText()
+        refreshSuggestions()
     }
 
     // MARK: - Internals
@@ -212,8 +212,17 @@ final class InputController: ObservableObject {
         let text = topCandidate
         let latin = composedLatin
         composedLatin = ""
-        proxy.insertText(text)
+        commit(text, to: proxy)
         lastCommit = (latin: latin, georgian: text)
+    }
+
+    /// Replaces the composing preview with final text. The preview is removed
+    /// explicitly: hosts stop treating insertText as "replace marked text" once
+    /// the user has touched the field mid-word, which left a duplicate behind.
+    private func commit(_ text: String, to proxy: UITextDocumentProxy) {
+        proxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+        proxy.unmarkText()
+        proxy.insertText(text)
     }
 
     func refreshSuggestions() {
