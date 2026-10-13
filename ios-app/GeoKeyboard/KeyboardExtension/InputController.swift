@@ -31,7 +31,7 @@ final class InputController: ObservableObject {
     private var composedLatin = ""
 
     init() {
-        // Dictionary parse is ~100–300 ms; never block keyboard appearance.
+        // The dictionary is memory-mapped and opens fast, but stay off the main thread.
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let engine = Engine.loadBundled()
             DispatchQueue.main.async {

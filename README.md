@@ -26,6 +26,7 @@ engine/translit.js   reference engine implementation (JS) — will be ported to 
 engine/test.js       accuracy + latency harness (node engine/test.js)
 data/ka_words_freq.tsv   49,257 Georgian words with corpus frequencies
 data/ka_bigrams.tsv      22,634 word bigrams for next-word prediction
+tools/build_dictionary.py   compiles data/*.tsv into the binary dictionary the iOS engine memory-maps
 demo/template.html   demo source (dictionary + engine get inlined at build)
 demo/build.py        builds demo/index.html
 demo/index.html      ⭐ self-contained interactive prototype — open in any browser

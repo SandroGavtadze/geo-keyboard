@@ -44,7 +44,7 @@ HOW IT WORKS
 • Full number and symbol layers
 
 SMART, NOT GUESSY
-• Autocorrect built on a 30,000-word Georgian frequency dictionary
+• Autocorrect built on a 49,000-word Georgian frequency dictionary
 • Handles ambiguous spellings (t/ტ/თ, k/კ/ქ, p/პ/ფ, c/ც/წ…) by picking the real word
 • Works in every app: Messages, WhatsApp, Telegram, Mail, Notes
 
@@ -87,7 +87,7 @@ gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
 • ციფრებისა და სიმბოლოების სრული განლაგება
 
 ჭკვიანი ავტოკორექცია
-• 30 000 სიტყვიანი ქართული სიხშირული ლექსიკონი
+• 49 000 სიტყვიანი ქართული სიხშირული ლექსიკონი
 • არჩევს სწორ სიტყვას ორაზროვან შემთხვევებში (t/ტ/თ, k/კ/ქ, p/პ/ფ, c/ც/წ…)
 • მუშაობს ყველა აპში
 

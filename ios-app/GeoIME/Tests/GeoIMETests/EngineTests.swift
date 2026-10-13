@@ -13,8 +13,33 @@ final class EngineTests: XCTestCase {
     }
 
     func testDictionaryLoaded() {
-        XCTAssertGreaterThan(Self.engine.wordCount, 25_000, "bundled dictionary should load (capped at Engine.bundledWordLimit)")
+        XCTAssertGreaterThan(Self.engine.wordCount, 45_000, "bundled dictionary should load in full")
         XCTAssertTrue(Self.engine.isWord("და"))
+        XCTAssertFalse(Self.engine.isWord("დაx"))
+    }
+
+    /// ka_dictionary.bin is generated — fails if it is stale relative to data/*.tsv.
+    /// Regenerate with `python3 tools/build_dictionary.py`.
+    func testCompiledDictionaryMatchesSource() throws {
+        let data = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("data")
+        let words = try String(contentsOf: data.appendingPathComponent("ka_words_freq.tsv"), encoding: .utf8)
+            .split(separator: "\n").map { $0.split(separator: "\t") }.filter { $0.count == 2 }
+        XCTAssertEqual(Self.engine.wordCount, words.count)
+        let missing = words.filter { !Self.engine.isWord(String($0[0])) }
+        XCTAssertTrue(missing.isEmpty, "\(missing.count) source words missing, e.g. \(missing.prefix(3))")
+
+        var expected: [String: [(String, Int)]] = [:]
+        for row in try String(contentsOf: data.appendingPathComponent("ka_bigrams.tsv"), encoding: .utf8)
+            .split(separator: "\n").map({ $0.split(separator: "\t") }) where row.count == 3 {
+            expected[String(row[0]), default: []].append((String(row[1]), Int(row[2])!))
+        }
+        for (prev, followers) in expected {
+            let got = Self.engine.predictNext(after: prev, max: followers.count + 1)
+            XCTAssertEqual(got.map { Int($0.score) }, followers.map(\.1).sorted(by: >), "bigram counts for \(prev)")
+            XCTAssertEqual(Set(got.map(\.text)), Set(followers.map(\.0)), "bigram followers for \(prev)")
+        }
     }
 
     func testHeadlinePhrase() {

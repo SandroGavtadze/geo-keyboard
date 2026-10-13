@@ -18,27 +18,8 @@ public struct Suggestion: Hashable, Sendable {
 /// EngineTests mirrors the JS test harness to keep the two in lockstep.
 public final class Engine {
 
-    /// Memory-lean trie node. Keyboard extensions are jetsam-killed around
-    /// ~60 MB; a [Character: TrieNode] Dictionary per node blew that budget
-    /// (the extension died seconds after launch in Simulator testing), so
-    /// children live in a compact array — average branching factor is small,
-    /// linear scan is fast.
-    final class TrieNode {
-        var children: ContiguousArray<(Character, TrieNode)> = []
-        var freq: Int32 = 0        // >0 iff a word ends here
-        var best: Int32 = 0        // max word freq in subtree (for completion walk)
-        var word: String? = nil    // full word, terminal nodes only
-
-        @inline(__always) func child(_ c: Character) -> TrieNode? {
-            for (ch, n) in children where ch == c { return n }
-            return nil
-        }
-    }
-
-    private let root = TrieNode()
-    private var freqs: [String: Int] = [:]
-    private var bigrams: [String: [(String, Int)]] = [:]
-    public private(set) var wordCount = 0
+    private let dict: CompiledDictionary?
+    public var wordCount: Int { dict?.wordCount ?? 0 }
 
     private static let maxDFSSteps = 20_000
     private static let exactBonus = 1.5
@@ -47,59 +28,24 @@ public final class Engine {
 
     // MARK: - Init
 
-    public init(words: [(String, Int)], bigrams: [(String, String, Int)] = []) {
-        for (w, f) in words { insert(w, freq: f) }
-        wordCount = words.count
-        var bg: [String: [(String, Int)]] = [:]
-        for (a, b, c) in bigrams { bg[a, default: []].append((b, c)) }
-        for (k, v) in bg { self.bigrams[k] = v.sorted { $0.1 > $1.1 } }
+    /// Opens a dictionary compiled by tools/build_dictionary.py. With a missing
+    /// or unreadable file the engine still works, but only offers the literal
+    /// transliteration.
+    public init(dictionaryURL: URL?) {
+        dict = dictionaryURL.flatMap(CompiledDictionary.init(contentsOf:))
     }
 
-    /// Word cap for the bundled dictionary — memory guardrail for the
-    /// extension process. Top-30k covers everyday vocabulary; raise once the
-    /// trie is a precompiled binary blob.
-    public static var bundledWordLimit = 30_000
-
-    /// Loads the bundled frequency list + bigrams.
-    /// Parsing takes ~100–300 ms on device; call off the main thread.
+    /// Opens the bundled dictionary. The file is memory-mapped, so this is
+    /// cheap and the trie costs no heap — keyboard extensions are jetsam-killed
+    /// around ~60 MB, which an in-memory trie of the full word list approached.
     public static func loadBundled() -> Engine {
-        func rows(_ name: String) -> [[Substring]] {
-            guard let url = Bundle.module.url(forResource: name, withExtension: "tsv"),
-                  let raw = try? String(contentsOf: url, encoding: .utf8) else { return [] }
-            return raw.split(separator: "\n").map { $0.split(separator: "\t") }
-        }
-        var words: [(String, Int)] = rows("ka_words_freq").compactMap {
-            guard $0.count == 2, let f = Int($0[1]) else { return nil }
-            return (String($0[0]), f)
-        }
-        if words.count > bundledWordLimit { words = Array(words.prefix(bundledWordLimit)) }
-        let bigrams: [(String, String, Int)] = rows("ka_bigrams").compactMap {
-            guard $0.count == 3, let c = Int($0[2]) else { return nil }
-            return (String($0[0]), String($0[1]), c)
-        }
-        return Engine(words: words, bigrams: bigrams)
+        Engine(dictionaryURL: Bundle.module.url(forResource: "ka_dictionary", withExtension: "bin"))
     }
 
-    private func insert(_ word: String, freq: Int) {
-        let f = Int32(clamping: freq)
-        var node = root
-        for ch in word {
-            if node.best < f { node.best = f }
-            if let next = node.child(ch) {
-                node = next
-            } else {
-                let next = TrieNode()
-                node.children.append((ch, next))
-                node = next
-            }
-        }
-        if node.best < f { node.best = f }
-        node.freq = f
-        node.word = word
-        freqs[word] = freq
+    public func isWord(_ w: String) -> Bool {
+        guard let dict, let node = dict.node(for: w) else { return false }
+        return dict.freq(node) > 0
     }
-
-    public func isWord(_ w: String) -> Bool { freqs[w] != nil }
 
     // MARK: - Literal transliteration
 
@@ -164,11 +110,14 @@ public final class Engine {
             return georgianPrefix(token, max: max)
         }
 
+        let lit = literal(token)
+        guard let dict else { return [Suggestion(text: lit, score: -1, kind: .verbatim)] }
+
         let chars = Array(token)
         var results: [String: (score: Double, kind: Suggestion.Kind)] = [:]
-        var reachedEnds: [(TrieNode, Double)] = []
-        var stack: [(Int, TrieNode, Double)] = [(0, root, 0)]
-        var bestAt: [Int: [ObjectIdentifier: Double]] = [:]
+        var reachedEnds: [(CompiledDictionary.Node, Double)] = []
+        var stack: [(Int, CompiledDictionary.Node, Double)] = [(0, CompiledDictionary.root, 0)]
+        var bestAt: [Int: [CompiledDictionary.Node: Double]] = [:]
         var steps = 0
 
         while let (pos, node, pen) = stack.popLast(), steps < Self.maxDFSSteps {
@@ -178,22 +127,23 @@ public final class Engine {
                 continue
             }
             for opt in options(at: pos, in: chars) {
-                guard let child = node.child(opt.char) else { continue }
+                guard let child = dict.child(of: node, opt.char) else { continue }
                 let npos = pos + opt.length
                 let npen = pen + opt.penalty
-                let id = ObjectIdentifier(child)
-                if let prevPen = bestAt[npos]?[id], prevPen <= npen { continue }
-                bestAt[npos, default: [:]][id] = npen
+                if let prevPen = bestAt[npos]?[child], prevPen <= npen { continue }
+                bestAt[npos, default: [:]][child] = npen
                 stack.append((npos, child, npen))
             }
         }
 
         for (node, pen) in reachedEnds {
-            if node.freq > 0, let w = node.word {
-                let score = log(1 + Double(node.freq)) - pen * Self.penaltyWeight + Self.exactBonus
+            let freq = dict.freq(node)
+            if freq > 0 {
+                let w = dict.word(at: node)
+                let score = log(1 + Double(freq)) - pen * Self.penaltyWeight + Self.exactBonus
                 if results[w]?.score ?? -.infinity < score { results[w] = (score, .exact) }
             }
-            collectCompletions(from: node, penalty: pen, into: &results, maxPerNode: 4)
+            collectCompletions(in: dict, from: node, penalty: pen, into: &results, maxPerNode: 4)
         }
 
         var out = results.map { Suggestion(text: $0.key, score: $0.value.score, kind: $0.value.kind) }
@@ -201,7 +151,6 @@ public final class Engine {
         if out.count > max { out = Array(out.prefix(max)) }
 
         // Verbatim literal conversion as fallback / first-class option.
-        let lit = literal(token)
         if !out.contains(where: { $0.text == lit }) {
             out.append(Suggestion(text: lit, score: -1, kind: .verbatim))
             if out.count > max { out.removeLast(out.count - max) }
@@ -210,45 +159,42 @@ public final class Engine {
     }
 
     private func collectCompletions(
-        from node: TrieNode, penalty: Double,
+        in dict: CompiledDictionary, from node: CompiledDictionary.Node, penalty: Double,
         into results: inout [String: (score: Double, kind: Suggestion.Kind)],
         maxPerNode: Int
     ) {
         // Best-first shallow walk, mirroring the JS implementation.
-        var heap: [(TrieNode, Int)] = [(node, 0)]
-        var visited = Set<ObjectIdentifier>()
+        var heap: [(CompiledDictionary.Node, Int)] = [(node, 0)]
+        var visited = Set<CompiledDictionary.Node>()
         var found = 0
         while !heap.isEmpty && found < maxPerNode {
-            heap.sort { $0.0.best > $1.0.best }
+            heap.sort { dict.best($0.0) > dict.best($1.0) }
             let (n, depth) = heap.removeFirst()
-            let id = ObjectIdentifier(n)
-            if visited.contains(id) { continue }
-            visited.insert(id)
-            if n.freq > 0, depth > 0, let w = n.word {
+            if visited.contains(n) { continue }
+            visited.insert(n)
+            let freq = dict.freq(n)
+            if freq > 0, depth > 0 {
+                let w = dict.word(at: n)
                 let complPenalty = penalty + Self.completionDepthCost * Double(depth)
-                let score = log(1 + Double(n.freq)) - complPenalty * Self.penaltyWeight
+                let score = log(1 + Double(freq)) - complPenalty * Self.penaltyWeight
                 if results[w]?.score ?? -.infinity < score { results[w] = (score, .completion) }
                 found += 1
             }
             if depth < 8 {
-                for (_, c) in n.children { heap.append((c, depth + 1)) }
+                for c in dict.children(of: n) { heap.append((c, depth + 1)) }
             }
         }
     }
 
     private func georgianPrefix(_ token: String, max: Int) -> [Suggestion] {
-        var node = root
-        for ch in token {
-            guard let next = node.child(ch) else {
-                return [Suggestion(text: token, score: 0, kind: .verbatim)]
-            }
-            node = next
+        guard let dict, let node = dict.node(for: token) else {
+            return [Suggestion(text: token, score: 0, kind: .verbatim)]
         }
         var results: [String: (score: Double, kind: Suggestion.Kind)] = [:]
-        if node.freq > 0 {
-            results[token] = (log(1 + Double(node.freq)), .exact)
+        if dict.freq(node) > 0 {
+            results[token] = (log(1 + Double(dict.freq(node))), .exact)
         }
-        collectCompletions(from: node, penalty: 0, into: &results, maxPerNode: 6)
+        collectCompletions(in: dict, from: node, penalty: 0, into: &results, maxPerNode: 6)
         var out = results.map { Suggestion(text: $0.key, score: $0.value.score, kind: $0.value.kind) }
             .sorted { $0.score > $1.score }
         if !out.contains(where: { $0.text == token }) {
@@ -258,7 +204,132 @@ public final class Engine {
     }
 
     public func predictNext(after prev: String?, max: Int = 3) -> [Suggestion] {
-        guard let prev, let list = bigrams[prev] else { return [] }
-        return list.prefix(max).map { Suggestion(text: $0.0, score: Double($0.1), kind: .prediction) }
+        guard let dict, let prev, let node = dict.node(for: prev) else { return [] }
+        return dict.bigrams(after: node, max: max).map {
+            Suggestion(text: dict.word(at: $0.next), score: Double($0.count), kind: .prediction)
+        }
+    }
+}
+
+/// Read-only view over the memory-mapped dictionary file. Nodes are addressed
+/// by index; node 0 is the root. Layout is documented in tools/build_dictionary.py.
+final class CompiledDictionary {
+    typealias Node = UInt32
+    static let root: Node = 0
+
+    private static let version: UInt32 = 1
+    private static let headerSize = 24
+    private static let nodeSize = 20
+    private static let bigramSize = 12
+
+    private let storage: NSData          // keeps the mapping alive
+    private let base: UnsafeRawPointer
+    private let nodesOffset: Int
+    private let bigramsOffset: Int
+    private let bigramCount: Int
+    private let alphabet: [Character]
+    private let charIndex: [Character: UInt8]
+    let wordCount: Int
+
+    init?(contentsOf url: URL) {
+        guard let data = try? NSData(contentsOf: url, options: .alwaysMapped),
+              data.length >= Self.headerSize else { return nil }
+        let base = data.bytes
+        func u32(_ offset: Int) -> UInt32 {
+            UInt32(littleEndian: base.loadUnaligned(fromByteOffset: offset, as: UInt32.self))
+        }
+        guard u32(0) == 0x544F_4547 /* "GEOT" */, u32(4) == Self.version else { return nil }
+        let alphabetCount = Int(u32(8)), nodeCount = Int(u32(12))
+        let bigramCount = Int(u32(20))
+        let nodesOffset = Self.headerSize + alphabetCount * 4
+        let bigramsOffset = nodesOffset + nodeCount * Self.nodeSize
+        guard alphabetCount <= 255, nodeCount > 0,
+              data.length == bigramsOffset + bigramCount * Self.bigramSize else { return nil }
+
+        var alphabet: [Character] = []
+        for i in 0..<alphabetCount {
+            guard let scalar = Unicode.Scalar(u32(Self.headerSize + i * 4)) else { return nil }
+            alphabet.append(Character(scalar))
+        }
+        self.storage = data
+        self.base = base
+        self.nodesOffset = nodesOffset
+        self.bigramsOffset = bigramsOffset
+        self.bigramCount = bigramCount
+        self.alphabet = alphabet
+        self.charIndex = Dictionary(uniqueKeysWithValues: alphabet.enumerated().map { ($1, UInt8($0)) })
+        self.wordCount = Int(u32(16))
+    }
+
+    // MARK: Node fields
+
+    @inline(__always) private func u32(_ node: Node, _ field: Int) -> UInt32 {
+        UInt32(littleEndian: base.loadUnaligned(fromByteOffset: nodesOffset + Int(node) * Self.nodeSize + field, as: UInt32.self))
+    }
+    @inline(__always) private func u8(_ node: Node, _ field: Int) -> UInt8 {
+        base.load(fromByteOffset: nodesOffset + Int(node) * Self.nodeSize + field, as: UInt8.self)
+    }
+
+    /// >0 iff a word ends at this node.
+    @inline(__always) func freq(_ node: Node) -> Int32 { Int32(bitPattern: u32(node, 8)) }
+    /// Max word frequency in the node's subtree (for the completion walk).
+    @inline(__always) func best(_ node: Node) -> Int32 { Int32(bitPattern: u32(node, 12)) }
+
+    /// Siblings are stored contiguously, most frequent branch first.
+    @inline(__always) func children(of node: Node) -> Range<Node> {
+        let first = u32(node, 0)
+        return first..<(first + Node(u8(node, 16)))
+    }
+
+    func child(of node: Node, _ c: Character) -> Node? {
+        guard let index = charIndex[c] else { return nil }
+        for child in children(of: node) where u8(child, 17) == index { return child }
+        return nil
+    }
+
+    func node(for word: String) -> Node? {
+        var node = Self.root
+        for c in word {
+            guard let next = child(of: node, c) else { return nil }
+            node = next
+        }
+        return node
+    }
+
+    /// Rebuilds the text spelled by the path from the root to `node`.
+    func word(at node: Node) -> String {
+        var chars: [Character] = []
+        var n = node
+        while n != Self.root {
+            chars.append(alphabet[Int(u8(n, 17))])
+            n = u32(n, 4)
+        }
+        return String(chars.reversed())
+    }
+
+    // MARK: Bigrams
+
+    private func bigram(_ i: Int) -> (prev: Node, next: Node, count: Int) {
+        func field(_ f: Int) -> UInt32 {
+            UInt32(littleEndian: base.loadUnaligned(fromByteOffset: bigramsOffset + i * Self.bigramSize + f, as: UInt32.self))
+        }
+        return (field(0), field(4), Int(field(8)))
+    }
+
+    /// Most frequent followers of the word ending at `prev`, best first.
+    func bigrams(after prev: Node, max: Int) -> [(next: Node, count: Int)] {
+        var lo = 0, hi = bigramCount
+        while lo < hi {
+            let mid = (lo + hi) / 2
+            if bigram(mid).prev < prev { lo = mid + 1 } else { hi = mid }
+        }
+        var out: [(next: Node, count: Int)] = []
+        while lo < bigramCount, out.count < max {
+            let entry = bigram(lo)
+            guard entry.prev == prev else { break }
+            out.append((entry.next, entry.count))
+            lo += 1
+        }
+        return out
     }
 }

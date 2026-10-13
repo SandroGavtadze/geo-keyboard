@@ -14,8 +14,7 @@ let package = Package(
         .target(
             name: "GeoIME",
             resources: [
-                .copy("Resources/ka_words_freq.tsv"),
-                .copy("Resources/ka_bigrams.tsv"),
+                .copy("Resources/ka_dictionary.bin"),
             ]
         ),
         .testTarget(
