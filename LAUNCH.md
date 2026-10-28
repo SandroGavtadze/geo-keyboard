@@ -27,8 +27,8 @@ In Xcode, for **both** targets (GeoKeyboard, GeoKeyboardExt) → Signing & Capab
 [developer.apple.com/account](https://developer.apple.com/account) → Certificates, IDs & Profiles → Identifiers. (Xcode's automatic signing usually creates these on first device build; verify they exist.)
 
 1. App Group: `group.com.sandrogavtadze.geokeyboard`
-2. App ID `com.sandrogavtadze.GeoKeyboard` — capabilities: App Groups (assign the group)
-3. App ID `com.sandrogavtadze.GeoKeyboard.keyboard` — capabilities: App Groups (assign the group)
+2. App ID `com.sandrogavtadze.GeoKeyboard.keyboard` (the app) — capabilities: App Groups (assign the group)
+3. App ID `com.sandrogavtadze.GeoKeyboard.keyboard.ext` (the keyboard extension) — capabilities: App Groups (assign the group). Xcode registers it on the first archive with automatic signing.
 
 ## 3. Agreements
 
@@ -36,7 +36,7 @@ The app is free with no in-app purchases, so the Paid Apps agreement, tax and ba
 
 ## 4. Create the app record
 
-App Store Connect → Apps → + → New App: platform iOS, name / language / bundle ID / SKU from `store/listing.md`. Choose the app's bundle ID (`com.sandrogavtadze.GeoKeyboard`), not the keyboard extension's — it cannot be changed afterwards. If only the extension's ID is offered, register the app's ID first (step 2).
+App Store Connect → Apps → + → New App: platform iOS, name / language / bundle ID / SKU from `store/listing.md`. The record already exists, bound to `com.sandrogavtadze.GeoKeyboard.keyboard`; the project uses that as the app's ID.
 
 Then fill in:
 - **App Information:** category, age rating, Privacy Policy URL

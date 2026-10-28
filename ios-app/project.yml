@@ -32,6 +32,8 @@ targets:
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # The App Store Connect record was created with this ID, and it can't be changed.
+        PRODUCT_BUNDLE_IDENTIFIER: com.sandrogavtadze.GeoKeyboard.keyboard
         TARGETED_DEVICE_FAMILY: "1"
     info:
       path: GeoKeyboard/HostApp/Info.plist
@@ -57,7 +59,7 @@ targets:
     settings:
       base:
         # Extensions MUST be namespaced under the parent app's bundle ID
-        PRODUCT_BUNDLE_IDENTIFIER: com.sandrogavtadze.GeoKeyboard.keyboard
+        PRODUCT_BUNDLE_IDENTIFIER: com.sandrogavtadze.GeoKeyboard.keyboard.ext
     sources:
       - GeoKeyboard/KeyboardExtension
       - GeoKeyboard/Shared

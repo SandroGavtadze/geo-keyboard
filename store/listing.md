@@ -6,8 +6,8 @@ Copy-paste source for App Store Connect. Character limits in parentheses.
 
 | | |
 |---|---|
-| App bundle ID | `com.sandrogavtadze.GeoKeyboard` |
-| Keyboard extension bundle ID | `com.sandrogavtadze.GeoKeyboard.keyboard` |
+| App bundle ID | `com.sandrogavtadze.GeoKeyboard.keyboard` (the App Store Connect record is bound to this ID) |
+| Keyboard extension bundle ID | `com.sandrogavtadze.GeoKeyboard.keyboard.ext` |
 | App Group | `group.com.sandrogavtadze.geokeyboard` |
 | SKU | `geokeyboard-ios` |
 | Primary language | English (U.S.) — the App Store has no Georgian localization, so the Georgian text goes in the same description |
