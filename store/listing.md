@@ -72,18 +72,22 @@ Data collection: **No, we do not collect data from this app.**
 
 ## App Review notes
 
+Plain ASCII only, in case the Notes field rejects Georgian script like the other fields.
+
+```text
 Kartulad is a custom keyboard extension for typing Georgian phonetically in Latin letters.
 
 To test:
-1. Launch the app, then go to Settings → General → Keyboard → Keyboards → Add New Keyboard… → Kartulad.
-2. Open Notes or Messages, hold the globe key and select "ქართული · Kartulad".
-3. Type `saxlshi xar` — it converts live to “სახლში ხარ”. Space accepts the top candidate.
-4. The აბგ / abc key switches between Latin-conversion mode and direct Georgian letters; 123 opens numbers and symbols.
+1. Launch the app, then go to Settings > General > Keyboard > Keyboards > Add New Keyboard... > Kartulad.
+2. Open Notes or Messages, hold the globe key and select the keyboard whose name ends in "Kartulad" (the first word of its name is Georgian).
+3. Type "saxlshi xar" - it converts live into Georgian script ("at home?"). Space accepts the top candidate.
+4. The key to the right of "123" (labelled with three Georgian letters) switches between Latin-conversion mode and direct Georgian letters; "123" opens numbers and symbols.
 5. After a word is committed, next-word predictions appear in the bar above the keys.
 
 The keyboard does NOT request Full Access (RequestsOpenAccess = false) and makes no network requests. No account or login is needed.
 
 The app is free and has no in-app purchases.
+```
 
 ## Screenshots
 
