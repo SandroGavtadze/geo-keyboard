@@ -27,70 +27,42 @@ The name field only accepts Latin characters — Georgian script and "→" are r
 
 **Subtitle (30):** Phonetic keyboard, autocorrect
 
+> **App Store Connect only accepts Latin text here.** Georgian script is rejected in the name, promotional text and description, and so are some symbols (the → arrow, and possibly bullets, curly quotes and long dashes). The text below uses plain keyboard punctuation only. The English-only description and promotional text have passed validation; the Latin-only keywords haven't been confirmed yet.
+
 **Promotional text (170):**
-Type Georgian the way you already text it — in Latin letters. Kartulad converts as you go: saxlshi xar? → სახლში ხარ?
+Type Georgian the way you already text it - in Latin letters. Kartulad converts as you go, with autocorrect and next-word predictions.
 
 **Description (4000):**
 Kartulad lets you write Georgian without hunting for letters. Type phonetically on the QWERTY layout you already know and the keyboard turns it into proper Georgian script as you type.
 
-saxlshi xar? → სახლში ხარ?
-gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
+Type "saxlshi xar?" and get it in Georgian script.
+Type "gamarjoba, rogor xar" and get it in Georgian script.
 
 Made for Georgians abroad, and for anyone whose thumbs learned QWERTY first.
 
 HOW IT WORKS
-• Type in Latin letters — see Georgian appear live, underlined, as you go
-• Press space to accept the top suggestion, or tap another candidate
-• Backspace right after a correction undoes it
-• Prefer real Georgian keys? Switch layouts any time with the აბგ / abc key
-• Full number and symbol layers
+- Type in Latin letters - see Georgian appear live, underlined, as you go
+- Press space to accept the top suggestion, or tap another candidate
+- Backspace right after a correction undoes it
+- Prefer real Georgian keys? Switch layouts any time with one key
+- Full number and symbol layers
 
 SMART, NOT GUESSY
-• Autocorrect built on a 49,000-word Georgian frequency dictionary
-• Next-word predictions after each word
-• Handles ambiguous spellings (t/ტ/თ, k/კ/ქ, p/პ/ფ, c/ც/წ…) by picking the real word
-• Works in every app: Messages, WhatsApp, Telegram, Mail, Notes
+- Autocorrect built on a 49,000-word Georgian frequency dictionary
+- Next-word predictions after each word
+- Handles ambiguous spellings by picking the real word
+- Works in every app: Messages, WhatsApp, Telegram, Mail, Notes
 
 PRIVATE BY DESIGN
-• Does NOT ask for “Allow Full Access”
-• No network access, no accounts, no analytics, no ads
-• Nothing you type ever leaves your iPhone
+- Does NOT ask for "Allow Full Access"
+- No network access, no accounts, no analytics, no ads
+- Nothing you type ever leaves your iPhone
 
 FREE
 Everything is free: typing, live conversion, autocorrect and next-word predictions. No ads, no subscription, no in-app purchases.
 
-— ქართულად —
-
-Kartulad-ით ქართულად წერა აღარ მოითხოვს ასოების ძებნას. აკრიფე ლათინურად, ნაცნობ QWERTY განლაგებაზე, და კლავიატურა წერის პროცესშივე გადაიყვანს ტექსტს ქართულ დამწერლობაზე.
-
-saxlshi xar? → სახლში ხარ?
-gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
-
-შექმნილია საზღვარგარეთ მცხოვრები ქართველებისთვის და ყველასთვის, ვინც ლათინურით წერას არის მიჩვეული.
-
-როგორ მუშაობს
-• წერე ლათინურად — ქართული ტექსტი მაშინვე ჩნდება
-• Space ადასტურებს პირველ ვარიანტს; შეგიძლია სხვა ვარიანტსაც დააჭირო
-• Backspace შესწორებისთანავე აბრუნებს მას უკან
-• გირჩევნია ქართული ასოები? აბგ / abc ღილაკით ნებისმიერ დროს გადართავ
-• ციფრებისა და სიმბოლოების სრული განლაგება
-
-ჭკვიანი ავტოკორექცია
-• 49 000 სიტყვიანი ქართული სიხშირული ლექსიკონი
-• შემდეგი სიტყვის შეთავაზება ყოველი სიტყვის შემდეგ
-• არჩევს სწორ სიტყვას ორაზროვან შემთხვევებში (t/ტ/თ, k/კ/ქ, p/პ/ფ, c/ც/წ…)
-• მუშაობს ყველა აპში
-
-კონფიდენციალურობა
-• არ ითხოვს „სრულ წვდომას“
-• ინტერნეტის, ანგარიშის, ანალიტიკისა და რეკლამის გარეშე
-• რასაც წერ, შენს iPhone-ს არ ტოვებს
-
-უფასო
-ყველაფერი უფასოა: წერა, ცოცხალი გადაყვანა, ავტოკორექცია და შემდეგი სიტყვის შეთავაზება. რეკლამის, გამოწერისა და აპშიდა შენაძენების გარეშე.
-
 **Keywords (100):**
-kartuli,qartuli,translit,transliteration,latin,კლავიატურა,ქართული,ქართულად,georgia,tbilisi,ime
+kartuli,qartuli,translit,transliteration,latin,georgia,tbilisi,sakartvelo,klaviatura,ime,mkhedruli
 
 **What's New (first version):** Initial release.
 
@@ -132,3 +104,35 @@ Files are in `store/screenshots/`, same five shots in each folder:
 5. **App Settings/Onboarding screen** — “Full Access არ არის საჭირო” visible. Caption: “Private. No Full Access. No network.”
 
 Simulator tips: confirm our keyboard is active by the suggestion bar + აბგ + 123 keys; never type during “Installing…”; if it wedges, quit Simulator and re-run. Capture with ⌘S in Simulator.
+
+## Georgian copy (not accepted by App Store Connect)
+
+Kept for the website, social posts or a future store that accepts Georgian.
+
+Kartulad-ით ქართულად წერა აღარ მოითხოვს ასოების ძებნას. აკრიფე ლათინურად, ნაცნობ QWERTY განლაგებაზე, და კლავიატურა წერის პროცესშივე გადაიყვანს ტექსტს ქართულ დამწერლობაზე.
+
+saxlshi xar? → სახლში ხარ?
+gamarjoba, rogor xar → გამარჯობა, როგორ ხარ
+
+შექმნილია საზღვარგარეთ მცხოვრები ქართველებისთვის და ყველასთვის, ვინც ლათინურით წერას არის მიჩვეული.
+
+როგორ მუშაობს
+• წერე ლათინურად — ქართული ტექსტი მაშინვე ჩნდება
+• Space ადასტურებს პირველ ვარიანტს; შეგიძლია სხვა ვარიანტსაც დააჭირო
+• Backspace შესწორებისთანავე აბრუნებს მას უკან
+• გირჩევნია ქართული ასოები? აბგ / abc ღილაკით ნებისმიერ დროს გადართავ
+• ციფრებისა და სიმბოლოების სრული განლაგება
+
+ჭკვიანი ავტოკორექცია
+• 49 000 სიტყვიანი ქართული სიხშირული ლექსიკონი
+• შემდეგი სიტყვის შეთავაზება ყოველი სიტყვის შემდეგ
+• არჩევს სწორ სიტყვას ორაზროვან შემთხვევებში (t/ტ/თ, k/კ/ქ, p/პ/ფ, c/ც/წ…)
+• მუშაობს ყველა აპში
+
+კონფიდენციალურობა
+• არ ითხოვს „სრულ წვდომას“
+• ინტერნეტის, ანგარიშის, ანალიტიკისა და რეკლამის გარეშე
+• რასაც წერ, შენს iPhone-ს არ ტოვებს
+
+უფასო
+ყველაფერი უფასოა: წერა, ცოცხალი გადაყვანა, ავტოკორექცია და შემდეგი სიტყვის შეთავაზება. რეკლამის, გამოწერისა და აპშიდა შენაძენების გარეშე.
