@@ -25,8 +25,8 @@ final class KeyboardViewController: UIInputViewController {
         host.didMove(toParent: self)
         hosting = host
 
-        // Keyboard height: keys (3×42 + spacing) + suggestion bar.
-        let height = view.heightAnchor.constraint(equalToConstant: 248)
+        // Keyboard height: suggestion bar + 4 key rows (see KeyMetrics).
+        let height = view.heightAnchor.constraint(equalToConstant: KeyMetrics.totalHeight)
         height.priority = .defaultHigh
         height.isActive = true
     }
@@ -44,4 +44,5 @@ final class KeyboardViewController: UIInputViewController {
         // Caret moved, field switched, or external edit — reconcile composition.
         controller.reconcileWithProxy()
     }
+
 }
