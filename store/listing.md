@@ -101,11 +101,11 @@ Files are in `store/screenshots/`, same five shots in each folder:
 
 `6.9/` are the original simulator captures; the other two are scaled from them.
 
-1. **Messages, mid-word** — `saxlshi` typed, marked text + suggestion bar showing სახლში. Caption: “Type Latin. Get ქართული.”
-2. **Messages, finished sentence** — “გამარჯობა, როგორ ხარ?” sent as a bubble, keyboard visible. Caption: “Converts as you type.”
-3. **Georgian-letters layout** — after tapping აბგ. Caption: “Or tap real Georgian keys.”
-4. **Next-word predictions** — a word committed, three predictions in the bar. Caption: “Predicts your next word.”
-5. **App Settings/Onboarding screen** — “Full Access არ არის საჭირო” visible. Caption: “Private. No Full Access. No network.”
+1. **Live conversion** - "gamarjoba rogor xar" being typed in Latin; ხარ is underlined and the bar offers ხარ / ხარი / ხარისხი.
+2. **Converts as you type** - a sent conversation above, "kargad" composing as კარგად with suggestions.
+3. **Georgian-letters layout** - after tapping აბგ, typing მადლ shows Georgian suggestions (მადლ / მადლი / მადლობა).
+4. **Next-word predictions** - after "rogor", the bar predicts უნდა / შეიძლება / არ.
+5. **App setup screen** - the three setup steps and "Full Access არ არის საჭირო".
 
 Simulator tips: confirm our keyboard is active by the suggestion bar + აბგ + 123 keys; never type during “Installing…”; if it wedges, quit Simulator and re-run. Capture with ⌘S in Simulator.
 

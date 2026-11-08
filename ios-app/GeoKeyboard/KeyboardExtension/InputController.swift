@@ -31,6 +31,12 @@ final class InputController: ObservableObject {
     private var lastCommit: (latin: String, georgian: String)?
     /// The Latin letters of the word currently being composed (Mode A).
     private var composedLatin = ""
+    /// The Georgian word being typed in Mode B. Kept here for the same reason
+    /// as composedLatin: the proxy reports typed letters late.
+    private var composedGeorgian = ""
+    /// The word we last committed ourselves, for next-word predictions; the
+    /// proxy may not show it yet when we ask for predictions.
+    private var lastWord: String?
 
     init() {
         // The dictionary is memory-mapped and opens fast, but stay off the main thread.
@@ -55,21 +61,25 @@ final class InputController: ObservableObject {
         return String(before.reversed().prefix(while: { $0.isASCII && $0.isLetter }).reversed())
     }
 
-    /// Trailing Georgian token before the caret (Mode B composing word).
-    private var currentGeorgianToken: String {
+    private static func isGeorgianLetter(_ c: Character) -> Bool { ("ა"..."ჰ").contains(c) }
+
+    /// Trailing Georgian token before the caret as the proxy sees it (may lag).
+    private var proxyGeorgianToken: String {
         let before = proxy?.documentContextBeforeInput ?? ""
-        return String(before.reversed().prefix(while: { ("ა"..."ჰ").contains($0) }).reversed())
+        return String(before.reversed().prefix(while: Self.isGeorgianLetter).reversed())
     }
 
     private var currentToken: String {
-        mode == .latin ? composedLatin : currentGeorgianToken
+        mode == .latin ? composedLatin : composedGeorgian
     }
 
     /// Previous committed Georgian word (for bigram next-word predictions).
     private var previousWord: String? {
+        if let lastWord { return lastWord }
         let before = proxy?.documentContextBeforeInput ?? ""
-        let stripped = mode == .georgian ? before.dropLast(currentGeorgianToken.count) : before[...]
-        let words = stripped.split(whereSeparator: { !("ა"..."ჰ").contains($0) })
+        // Drop the word being typed (however much of it the proxy shows yet).
+        let stripped = before.reversed().drop(while: Self.isGeorgianLetter)
+        let words = String(stripped.reversed()).split(whereSeparator: { !Self.isGeorgianLetter($0) })
         return words.last.map(String.init)
     }
 
@@ -94,6 +104,8 @@ final class InputController: ObservableObject {
             // Punctuation/digit while composing: commit the word first.
             commitCompositionIfNeeded()
             proxy?.insertText(t)
+            composedGeorgian = ""
+            lastWord = nil
             refreshSuggestions()
         }
     }
@@ -103,6 +115,12 @@ final class InputController: ObservableObject {
         shiftOn = false
         proxy?.insertText(t)
         lastCommit = nil
+        if t.count == 1, let c = t.first, Self.isGeorgianLetter(c) {
+            composedGeorgian += t
+        } else {
+            composedGeorgian = ""
+            lastWord = nil
+        }
         refreshSuggestions()
     }
 
@@ -115,9 +133,12 @@ final class InputController: ObservableObject {
             commit(text, to: proxy)
             proxy.insertText(" ")
             lastCommit = (latin: latin, georgian: text)
+            lastWord = text
         } else {
             proxy.insertText(" ")
             lastCommit = nil
+            lastWord = composedGeorgian.isEmpty ? nil : composedGeorgian
+            composedGeorgian = ""
         }
         refreshSuggestions()
     }
@@ -130,6 +151,14 @@ final class InputController: ObservableObject {
             updateMarkedText()
             return
         }
+        if mode == .georgian, !composedGeorgian.isEmpty {
+            proxy.deleteBackward()
+            composedGeorgian.removeLast()
+            lastCommit = nil
+            refreshSuggestions()
+            return
+        }
+        lastWord = nil
         // Undo auto-commit: " " + georgian → restore latin composition
         if let commit = lastCommit,
            (proxy.documentContextBeforeInput ?? "").hasSuffix(commit.georgian + " ") {
@@ -142,8 +171,15 @@ final class InputController: ObservableObject {
                 return
             }
         } else {
+            // Read the context before deleting: by now it has caught up.
+            let before = proxy.documentContextBeforeInput ?? ""
             proxy.deleteBackward()
             lastCommit = nil
+            if mode == .georgian {
+                // Backspacing into a word makes it the word being typed again.
+                let rest = before.dropLast()
+                composedGeorgian = String(rest.reversed().prefix(while: Self.isGeorgianLetter).reversed())
+            }
         }
         refreshSuggestions()
     }
@@ -152,6 +188,8 @@ final class InputController: ObservableObject {
         commitCompositionIfNeeded()
         proxy?.insertText("\n")
         lastCommit = nil
+        composedGeorgian = ""
+        lastWord = nil
         refreshSuggestions()
     }
 
@@ -166,15 +204,17 @@ final class InputController: ObservableObject {
             proxy.insertText(" ")
             if !latin.isEmpty { lastCommit = (latin: latin, georgian: suggestion.text) }
         } else {
-            let token = currentGeorgianToken
-            for _ in 0..<token.count { proxy.deleteBackward() }
+            for _ in 0..<composedGeorgian.count { proxy.deleteBackward() }
+            composedGeorgian = ""
             proxy.insertText(suggestion.text + " ")
         }
+        lastWord = suggestion.text
         refreshSuggestions()
     }
 
     func toggleMode() {
         commitCompositionIfNeeded()
+        composedGeorgian = ""
         mode = mode == .latin ? .georgian : .latin
         refreshSuggestions()
     }
@@ -186,6 +226,16 @@ final class InputController: ObservableObject {
     /// longer at the caret (field cleared via ⓧ, caret moved, external edit),
     /// the composition is stale and must be dropped.
     func reconcileWithProxy() {
+        let before = proxy?.documentContextBeforeInput ?? ""
+        if before.isEmpty { lastWord = nil }   // field cleared or message sent
+        if mode == .georgian {
+            // A lagging proxy shows a prefix of what we typed; anything else
+            // means the caret moved or the text changed, so follow the proxy.
+            let seen = proxyGeorgianToken
+            if before.isEmpty || !composedGeorgian.hasPrefix(seen) {
+                composedGeorgian = seen
+            }
+        }
         guard !composedLatin.isEmpty else { refreshSuggestions(); return }
         // documentContextBeforeInput never includes marked text, so we can't
         // verify the preview is still at the caret. Let the host keep whatever
@@ -216,6 +266,7 @@ final class InputController: ObservableObject {
         composedLatin = ""
         commit(text, to: proxy)
         lastCommit = (latin: latin, georgian: text)
+        lastWord = text
     }
 
     /// Replaces the composing preview with final text. The preview is removed
